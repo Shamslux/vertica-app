@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracker CP-T 2026 - Estratégico</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f3f4f6; }
+        .checkbox-wrapper input:checked + div {
+            background-color: #1e3a8a; /* Azul Marinha */
+            border-color: #1e3a8a;
+        }
+        .checkbox-wrapper input:checked + div svg {
+            display: block;
+        }
+        /* Animação suave para os detalhes */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+    </style>
+</head>
+<body class="text-slate-800">
+
+ <nav class="bg-blue-900 text-white p-4 shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            
+            <div class="flex items-center gap-3">
+                <i class="fas fa-anchor text-2xl text-yellow-400"></i>
+                <div>
+                    <h1 class="text-xl font-bold leading-none">CP-T 2026</h1>
+                    <span class="text-xs text-blue-200 opacity-80">Engenharia de Dados & TI</span>
+                </div>
+            </div>
+
+            <div class="flex bg-blue-800 rounded-lg p-1">
+                <a href="index.html" class="px-4 py-1.5 rounded-md text-sm font-medium bg-blue-700 text-white shadow-sm">
+                    <i class="fas fa-list-alt mr-2"></i>Edital
+                </a>
+                <a href="controle.html" class="px-4 py-1.5 rounded-md text-sm font-medium transition hover:bg-blue-700 hover:text-white text-blue-100">
+                    <i class="fas fa-chart-line mr-2"></i>Controle & Ciclo
+                </a>
+                <a href="cronograma.html" class="px-4 py-1.5 rounded-md text-sm font-medium transition hover:bg-blue-700 hover:text-white text-blue-100">
+                    <i class="fas fa-calendar-alt mr-2"></i>Cronograma
+                </a>
+                <a href="aulas.html" class="px-4 py-1.5 rounded-md text-sm font-medium transition hover:bg-blue-700 hover:text-white text-blue-100">
+                    <i class="fas fa-book mr-2"></i>Aulas
+                </a>
+                <a href="painel_tatico.html" class="px-4 py-1.5 rounded-md text-sm font-medium transition hover:bg-blue-700 hover:text-white text-blue-100">
+                    <i class="fas fa-heartbeat mr-2"></i>TAF & Saúde
+                </a>
+            </div>
+
+            <div class="flex gap-4 text-sm">
+                <button onclick="exportData()" class="hover:text-yellow-400 transition" title="Baixar Backup"><i class="fas fa-download"></i></button>
+                <label class="cursor-pointer hover:text-yellow-400 transition" title="Restaurar Backup">
+                    <i class="fas fa-upload"></i>
+                    <input type="file" id="importFile" class="hidden" onchange="importData(this)">
+                </label>
+                <button onclick="resetData()" class="text-red-300 hover:text-red-100 transition" title="Apagar Tudo"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto p-4 md:p-6">
+        
+        <div class="bg-white rounded-lg p-3 shadow-sm mb-6 flex flex-wrap justify-center gap-4 text-xs md:text-sm border border-gray-100">
+            <span class="font-bold text-gray-500 uppercase tracking-wide mr-2 self-center">Frequência em Provas:</span>
+            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-rose-600"></span> <span class="font-bold text-rose-700">Muito Alta (>30%)</span></div>
+            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-orange-500"></span> <span class="font-bold text-orange-600">Alta (25-30%)</span></div>
+            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-sky-500"></span> <span class="font-bold text-sky-600">Média (12-22%)</span></div>
+            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-slate-400"></span> <span class="text-slate-500">Baixa (<10%)</span></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-white p-5 rounded-lg shadow-sm border-l-4 border-blue-900 relative overflow-hidden">
+                <i class="fas fa-book-open absolute -right-4 -bottom-4 text-6xl text-gray-100 z-0"></i>
+                <h3 class="text-gray-500 text-xs font-bold uppercase relative z-10">Progresso Teórico</h3>
+                <div class="flex items-end gap-2 relative z-10">
+                    <span id="theory-percent" class="text-3xl font-bold text-blue-900">0%</span>
+                </div>
+                <div class="w-full bg-gray-100 h-1.5 mt-2 rounded-full relative z-10">
+                    <div id="theory-bar" class="bg-blue-900 h-1.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-lg shadow-sm border-l-4 border-emerald-500 relative overflow-hidden">
+                <i class="fas fa-check-circle absolute -right-4 -bottom-4 text-6xl text-gray-100 z-0"></i>
+                <h3 class="text-gray-500 text-xs font-bold uppercase relative z-10">Questões Resolvidas</h3>
+                <div class="flex items-end gap-2 relative z-10">
+                    <span id="quest-percent" class="text-3xl font-bold text-emerald-600">0%</span>
+                </div>
+                <div class="w-full bg-gray-100 h-1.5 mt-2 rounded-full relative z-10">
+                    <div id="quest-bar" class="bg-emerald-500 h-1.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-lg shadow-sm border-l-4 border-amber-500 relative overflow-hidden">
+                <i class="fas fa-trophy absolute -right-4 -bottom-4 text-6xl text-gray-100 z-0"></i>
+                <h3 class="text-gray-500 text-xs font-bold uppercase relative z-10">Performance Geral</h3>
+                <div class="flex items-end gap-2 relative z-10">
+                    <span id="avg-score" class="text-3xl font-bold text-amber-500">0%</span>
+                    <span class="text-xs text-gray-400 mb-1">de acertos</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="syllabus-container" class="space-y-6">
+            </div>
+
+    </main>
+
+    <script>
+        // Definição da Estrutura com Dados de Inteligência de Prova
+        const structureDefinition = [
+            {
+                id: "cat_eng_soft",
+                category: "5. ENGENHARIA DE SOFTWARE",
+                impact: "very_high",
+                stats: "≈ 30-35%",
+                insightTitle: "Coração da Prova",
+                insightText: "Foque em: UML (Diagramas de Classe, Sequência), Metodologias Ágeis (Scrum/XP), Padrões de Projeto (GoF) e Testes. <br><span class='text-red-500 font-bold'>Não cai:</span> Código complexo ou prática pesada.",
+                topics: [
+                    "Ciclo de Vida de Software", "Processos de Software (Cascata, Incremental)",
+                    "Métodos Ágeis (Scrum, XP, Kanban)", "Engenharia de Requisitos", "Análise e Projeto (UML)",
+                    "Padrões de Projeto (Design Patterns - GoF)", "Testes de Software",
+                    "Qualidade de Software (CMMI, MPS.BR)", "Gerência de Configuração", "DevOps e CI/CD"
+                ]
+            },
+            {
+                id: "cat_gov_ti",
+                category: "7. GOVERNANÇA DE TI",
+                impact: "very_high", // Agrupado com Eng Software
+                stats: "≈ 30-35% (com Eng. Soft)",
+                insightTitle: "Decoreba Obrigatória",
+                insightText: "Conceitos literais de ITIL e COBIT. PMBOK (Gerência de Projetos) também aparece aqui.",
+                topics: [
+                    "ITIL (Conceitos, Práticas e Ciclo de Vida)", "COBIT (Princípios e Domínios)"
+                ]
+            },
+            {
+                id: "cat_algo",
+                category: "6. ALGORITMOS E ESTRUTURAS DE DADOS",
+                impact: "high",
+                stats: "≈ 25-30%",
+                insightTitle: "Programação e Lógica",
+                insightText: "Python e Java dominam. Questões tipo 'O que será impresso?'. <br><span class='text-red-500 font-bold'>Atenção:</span> Recursão, Arrays, Complexidade O(). Nada de frameworks web.",
+                topics: [
+                    "Lógica de Programação", "Tipos de Dados, Variáveis e Comandos", "Listas, Pilhas e Filas",
+                    "Árvores (Binárias, AVL, B, B+)", "Grafos", "Algoritmos de Ordenação e Busca",
+                    "Complexidade de Algoritmos", "Programação Orientada a Objetos (Java/Python)"
+                ]
+            },
+            {
+                id: "cat_redes",
+                category: "2. REDES DE COMPUTADORES",
+                impact: "medium",
+                stats: "≈ 18-22% (com Seg.)",
+                insightTitle: "Conceitual Puro",
+                insightText: "Modelo OSI e TCP/IP são lei. Protocolos (DNS, HTTP, TCP/UDP). Não cai configuração de roteador (Cisco CLI), apenas teoria.",
+                topics: [
+                    "Arquiteturas de Redes (OSI e TCP/IP)", "Camada Física e Enlace", "Camada de Rede (IP, Roteamento, ICMP)",
+                    "Camada de Transporte (TCP, UDP)", "Camada de Aplicação (DNS, HTTP, SMTP, etc.)",
+                    "Redes sem fio (Wireless)", "Gerenciamento de Redes (SNMP)"
+                ]
+            },
+            {
+                id: "cat_seg",
+                category: "3. SEGURANÇA DA INFORMAÇÃO",
+                impact: "medium",
+                stats: "≈ 18-22% (com Redes)",
+                insightTitle: "Terminologia",
+                insightText: "Criptografia (Simétrica vs Assimétrica), Hash, Assinatura Digital e Ataques (DoS, Phishing).",
+                topics: [
+                    "Confidencialidade, Integridade e Disponibilidade", "Criptografia (Simétrica, Assimétrica, Hash)",
+                    "Autenticação e Assinatura Digital", "Controle de Acesso e Biometria",
+                    "Malwares e Ataques (Vírus, Worms, DoS, etc.)", "Firewalls, IDS e IPS", "VPN e IPSec",
+                    "Normas ISO/IEC 27001 e 27002"
+                ]
+            },
+            {
+                id: "cat_db",
+                category: "4. BANCO DE DADOS",
+                impact: "medium_low",
+                stats: "≈ 12-15%",
+                insightTitle: "Consistente",
+                insightText: "Normalização (até 3FN) e SQL ANSI (JOINs, Group By). Modelagem ER cai bastante. Data Warehouse/Mining é teórico.",
+                topics: [
+                    "Modelagem Conceitual (Modelo ER)", "Modelo Relacional e Normalização", "Linguagem SQL (DDL, DML, DQL, DCL)",
+                    "Gerência de Transações e Concorrência", "Business Intelligence (Data Warehouse, ETL, OLAP)",
+                    "Data Mining / Big Data Concepts", "NoSQL"
+                ]
+            },
+            {
+                id: "cat_so",
+                category: "1. ORG. COMPUTADORES E SO",
+                impact: "low",
+                stats: "≈ 8-10%",
+                insightTitle: "Periférico",
+                insightText: "Comandos básicos de Linux (permissões, processos), Gerência de Memória e Deadlocks. Virtualização.",
+                topics: [
+                    "Aritmética computacional (representação de dados)", "Organização de memória (hierarquia, cache, virtual)",
+                    "Conjunto de instruções e processadores", "E/S e Barramentos", "Pipelining",
+                    "Gerência de Processos e Threads", "Deadlocks", "Gerência de Memória (Paginação/Segmentação)",
+                    "Sistemas de Arquivos", "Virtualização / Linux Básico"
+                ]
+            }
+        ];
+
+        let appData = [];
+
+        // Cores baseadas no impacto
+        const impactStyles = {
+            very_high: { bg: "bg-rose-100", border: "border-rose-500", text: "text-rose-700", pill: "bg-rose-600", icon: "fire" },
+            high:      { bg: "bg-orange-50", border: "border-orange-500", text: "text-orange-700", pill: "bg-orange-500", icon: "arrow-up" },
+            medium:    { bg: "bg-sky-50", border: "border-sky-500", text: "text-sky-700", pill: "bg-sky-500", icon: "minus" },
+            medium_low:{ bg: "bg-teal-50", border: "border-teal-500", text: "text-teal-700", pill: "bg-teal-500", icon: "minus" },
+            low:       { bg: "bg-slate-50", border: "border-slate-400", text: "text-slate-600", pill: "bg-slate-400", icon: "arrow-down" }
+        };
+
+        function init() {
+            const savedJSON = localStorage.getItem('cpt2026_data_v2');
+            let savedProgress = {};
+
+            if (savedJSON) {
+                // Se já existir, carregamos apenas o progresso (checks e notas)
+                // Isso permite que eu atualize a estrutura (structureDefinition) sem quebrar o save do usuário
+                const parsed = JSON.parse(savedJSON);
+                parsed.forEach(cat => {
+                    cat.topics.forEach(t => {
+                        // Chave única baseada no nome do tópico
+                        savedProgress[t.name] = {
+                            theory: t.theory, rev1: t.rev1, rev2: t.rev2, quest: t.quest, score: t.score, notes: t.notes
+                        };
+                    });
+                });
+            }
+
+            // Merge da Estrutura Nova + Progresso Salvo
+            appData = structureDefinition.map(section => ({
+                ...section,
+                topics: section.topics.map(tName => {
+                    const saved = savedProgress[tName] || {};
+                    return {
+                        name: tName,
+                        theory: saved.theory || false,
+                        rev1: saved.rev1 || false,
+                        rev2: saved.rev2 || false,
+                        quest: saved.quest || false,
+                        score: saved.score || null,
+                        notes: saved.notes || ""
+                    };
+                })
+            }));
+
+            render();
+            updateStats();
+        }
+
+        function render() {
+            const container = document.getElementById('syllabus-container');
+            container.innerHTML = '';
+
+            appData.forEach((section, sIndex) => {
+                const style = impactStyles[section.impact];
+                
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = `bg-white rounded-lg shadow border-l-4 ${style.border} overflow-hidden`;
+                
+                // Header da Seção
+                const header = `
+                    <div class="p-4 border-b border-gray-100 flex flex-col md:flex-row justify-between md:items-center gap-2 cursor-pointer hover:bg-gray-50 transition" onclick="toggleDetails(${sIndex})">
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="${style.pill} text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+                                    <i class="fas fa-${style.icon} mr-1"></i>${section.stats}
+                                </span>
+                                <span class="text-xs text-gray-400 font-mono">${section.topics.length} tópicos</span>
+                            </div>
+                            <h2 class="font-bold text-lg text-slate-800">${section.category}</h2>
+                        </div>
+                        <i class="fas fa-chevron-down text-gray-300 transform transition-transform" id="chevron-${sIndex}"></i>
+                    </div>
+                `;
+
+                // Insight Box (Dica de Ouro)
+                const insightBox = `
+                    <div class="${style.bg} p-3 mx-4 mt-4 rounded-md border border-${style.border.replace('border-', '')}/20 text-sm">
+                        <div class="flex gap-2">
+                            <div class="mt-0.5"><i class="fas fa-lightbulb ${style.text}"></i></div>
+                            <div class="text-slate-700">
+                                <span class="font-bold ${style.text} block mb-1 uppercase text-xs">${section.insightTitle}</span>
+                                ${section.insightText}
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                let topicsHtml = '';
+                section.topics.forEach((topic, tIndex) => {
+                    topicsHtml += `
+                        <div class="border-b border-gray-100 last:border-0 hover:bg-slate-50 transition p-3 md:p-4">
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                                <div class="flex-1 text-sm md:text-base font-medium text-slate-700">
+                                    ${topic.name}
+                                </div>
+                                
+                                <div class="flex items-center justify-end gap-3 md:gap-6 overflow-x-auto pb-1 md:pb-0">
+                                    <div class="flex gap-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                                        ${['theory', 'rev1', 'rev2', 'quest'].map(field => `
+                                            <label class="flex flex-col items-center cursor-pointer gap-1 checkbox-wrapper min-w-[30px]">
+                                                <span>${field === 'theory' ? 'Teoria' : field === 'quest' ? 'Quest' : field}</span>
+                                                <input type="checkbox" class="hidden" 
+                                                    ${topic[field] ? 'checked' : ''} 
+                                                    onchange="toggleCheck(${sIndex}, ${tIndex}, '${field}')">
+                                                <div class="w-5 h-5 border border-gray-300 rounded flex items-center justify-center transition bg-white shadow-sm">
+                                                    <svg class="w-3 h-3 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                                </div>
+                                            </label>
+                                        `).join('')}
+                                    </div>
+
+                                    <div class="flex flex-col items-center ml-2 border-l pl-4 border-gray-200">
+                                        <span class="text-[9px] uppercase font-bold text-gray-400 mb-0.5">% Acerto</span>
+                                        <input type="number" min="0" max="100" placeholder="-" 
+                                            class="w-12 text-center border border-gray-300 rounded py-0.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none ${getScoreColor(topic.score)}"
+                                            value="${topic.score !== null ? topic.score : ''}"
+                                            onchange="updateScore(${sIndex}, ${tIndex}, this.value)">
+                                    </div>
+
+                                    <button onclick="toggleNote(${sIndex}, ${tIndex})" class="text-gray-300 hover:text-blue-600 transition ml-1" title="Anotações">
+                                        <i class="fas fa-sticky-note fa-lg"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div id="note-${sIndex}-${tIndex}" class="${topic.notes ? '' : 'hidden'} mt-3 pt-3 border-t border-dashed border-gray-200">
+                                <label class="text-xs font-bold text-gray-400 uppercase mb-1 block">Minhas Anotações:</label>
+                                <textarea rows="3" 
+                                    class="w-full p-2 text-sm border border-gray-200 rounded bg-yellow-50/50 focus:bg-yellow-50 focus:ring-2 focus:ring-yellow-400 outline-none transition"
+                                    onchange="updateNote(${sIndex}, ${tIndex}, this.value)"
+                                    placeholder="Resumo, fórmulas ou erros recorrentes...">${topic.notes}</textarea>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                sectionDiv.innerHTML = header + `<div id="content-${sIndex}" class="">${insightBox}<div class="mt-2">${topicsHtml}</div></div>`;
+                container.appendChild(sectionDiv);
+            });
+        }
+
+        // UX Helper: Toggle de Accordion (opcional, aqui deixei aberto por padrão mas visualmente organizado)
+        function toggleDetails(index) {
+            const content = document.getElementById(`content-${index}`);
+            const chevron = document.getElementById(`chevron-${index}`);
+            content.classList.toggle('hidden');
+            chevron.classList.toggle('rotate-180');
+        }
+
+        function getScoreColor(score) {
+            if (score === null || score === "") return "text-gray-600";
+            if (score >= 80) return "text-emerald-600 font-bold bg-emerald-50 border-emerald-300";
+            if (score >= 60) return "text-amber-600 font-bold bg-amber-50 border-amber-300";
+            return "text-red-600 font-bold bg-red-50 border-red-300";
+        }
+
+        // Lógica de Atualização
+        function toggleCheck(sIdx, tIdx, field) {
+            appData[sIdx].topics[tIdx][field] = !appData[sIdx].topics[tIdx][field];
+            save();
+            updateStats();
+        }
+
+        function updateScore(sIdx, tIdx, val) {
+            appData[sIdx].topics[tIdx].score = val ? parseInt(val) : null;
+            save();
+            updateStats(); // Para atualizar cores se necessário
+            render(); // Re-render para aplicar cor no input
+        }
+
+        function updateNote(sIdx, tIdx, val) {
+            appData[sIdx].topics[tIdx].notes = val;
+            save();
+        }
+
+        function toggleNote(sIdx, tIdx) {
+            const el = document.getElementById(`note-${sIdx}-${tIdx}`);
+            el.classList.toggle('hidden');
+        }
+
+        function save() {
+            // Salva na v2 para diferenciar da versão anterior simples
+            localStorage.setItem('cpt2026_data_v2', JSON.stringify(appData));
+        }
+
+        function updateStats() {
+            let totalTopics = 0;
+            let theoryDone = 0;
+            let questDone = 0;
+            let scoreSum = 0;
+            let scoreCount = 0;
+
+            appData.forEach(s => {
+                s.topics.forEach(t => {
+                    totalTopics++;
+                    if (t.theory) theoryDone++;
+                    if (t.quest) questDone++;
+                    if (t.score !== null) {
+                        scoreSum += t.score;
+                        scoreCount++;
+                    }
+                });
+            });
+
+            const pTheory = totalTopics ? Math.round((theoryDone / totalTopics) * 100) : 0;
+            const pQuest = totalTopics ? Math.round((questDone / totalTopics) * 100) : 0;
+            const avgScore = scoreCount ? Math.round(scoreSum / scoreCount) : 0;
+
+            document.getElementById('theory-percent').innerText = `${pTheory}%`;
+            document.getElementById('theory-bar').style.width = `${pTheory}%`;
+            
+            document.getElementById('quest-percent').innerText = `${pQuest}%`;
+            document.getElementById('quest-bar').style.width = `${pQuest}%`;
+
+            document.getElementById('avg-score').innerText = `${avgScore}%`;
+        }
+
+        // Backup e Restore
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "backup_marinha_cp_t_v2.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
+        function importData(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    // Validação simples
+                    if(parsed && Array.isArray(parsed)) {
+                        localStorage.setItem('cpt2026_data_v2', JSON.stringify(parsed));
+                        location.reload();
+                    }
+                } catch (err) {
+                    alert("Erro ao ler arquivo de backup.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function resetData() {
+            if(confirm("Tem certeza? Isso apagará todo o seu progresso.")){
+                localStorage.removeItem('cpt2026_data_v2');
+                location.reload();
+            }
+        }
+
+        // Iniciar App
+        init();
+    </script>
+</body>
+</html>

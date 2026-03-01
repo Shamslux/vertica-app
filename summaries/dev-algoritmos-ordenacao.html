@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumo Otimizado: Algoritmos e Estruturas - Marinha (CP-T)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        concept: { 50: '#f5f3ff', 500: '#8b5cf6', 700: '#6d28d9' },
+                        basic: { 50: '#eff6ff', 500: '#3b82f6', 700: '#1d4ed8' },
+                        advanced: { 50: '#f0fdf4', 500: '#22c55e', 700: '#15803d' },
+                        warning: { 50: '#fff7ed', 500: '#f97316', 700: '#c2410c' },
+                        search: { 50: '#fdf4ff', 500: '#d946ef', 700: '#a21caf' },
+                        navy: { 800: '#1e3a8a', 900: '#1e3a5f' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); border: 1px solid rgba(226, 232, 240, 0.8); }
+        .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased leading-relaxed font-sans">
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm bg-opacity-90 backdrop-blur-md">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-navy-800 rounded-xl flex items-center justify-center text-white font-extrabold text-xl shadow-lg">ED</div>
+                <div>
+                    <h1 class="text-xl font-bold text-slate-900 leading-tight">Estrutura de Dados e Algoritmos</h1>
+                    <p class="text-xs text-slate-500 font-medium tracking-wide uppercase">Foco Estratégico: Concurso Marinha (CP-T)</p>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-[10px] font-bold border border-slate-200 uppercase tracking-tighter">Conceitos</span>
+                <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-[10px] font-bold border border-slate-200 uppercase tracking-tighter">Ordenação</span>
+                <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-[10px] font-bold border border-slate-200 uppercase tracking-tighter">Busca</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-10 space-y-16">
+
+        <section>
+            <div class="flex items-center gap-4 mb-8 border-b border-slate-200 pb-4">
+                <div class="w-10 h-10 rounded-lg bg-concept-500 text-white flex items-center justify-center shadow-lg font-bold text-lg">1</div>
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800">Conceitos Fundamentais</h2>
+                    <p class="text-xs text-slate-500 uppercase font-semibold">Bases Teóricas Exigidas em Prova</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
+                    <h3 class="text-lg font-bold text-slate-800 mb-3 border-b border-slate-100 pb-2">Estabilidade</h3>
+                    <p class="text-sm text-slate-600 mb-4">Um algoritmo é considerado <strong>estável</strong> quando preserva a ordem relativa de elementos com chaves iguais (duplicadas) durante a ordenação.</p>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-green-500"></span> <strong>Estáveis:</strong> BubbleSort, InsertionSort e MergeSort.</div>
+                        <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-red-500"></span> <strong>Instáveis:</strong> SelectionSort, QuickSort, HeapSort e ShellSort.</div>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
+                    <h3 class="text-lg font-bold text-slate-800 mb-3 border-b border-slate-100 pb-2">Notações Assintóticas</h3>
+                    <p class="text-sm text-slate-600 mb-4">Determinam o custo computacional independentemente do hardware, medindo as operações primitivas em função do tamanho (n) da entrada.</p>
+                    <ul class="text-sm text-slate-700 space-y-2 mb-4">
+                        <li><strong class="text-concept-700">Big-O (O):</strong> Representa o <strong>Pior Caso</strong> (limite superior). É a mais cobrada em provas.</li>
+                        <li><strong class="text-concept-700">Big-Ômega (&Omega;):</strong> Representa o <strong>Melhor Caso</strong> (limite inferior).</li>
+                        <li><strong class="text-concept-700">Big-Theta (&Theta;):</strong> Representa o <strong>Caso Médio</strong> (limite exato).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-warning-50 border-l-4 border-warning-500 p-5 rounded-r-2xl shadow-sm flex flex-col md:flex-row gap-6 items-center">
+                <div class="flex-1">
+                    <h4 class="font-bold text-warning-700 text-sm uppercase tracking-widest mb-2">Dica de Prova</h4>
+                    <p class="text-sm text-slate-700">Na notação assintótica, a <strong>base do logaritmo</strong> (seja base 2, 10 ou neperiano) é <strong>irrelevante</strong>, pois é tratada matematicamente como uma constante.</p>
+                </div>
+                <div class="flex-1 bg-white p-4 rounded-xl border border-warning-200 w-full">
+                    <h4 class="font-bold text-slate-800 text-xs uppercase tracking-widest mb-2 text-center">Ordem de Crescimento (Mais rápido &rarr; Mais lento)</h4>
+                    <p class="text-xs font-mono text-center text-slate-600">
+                        O(1) &lt; O(log n) &lt; O(n) &lt; O(n log n) &lt; O(n<sup>2</sup>) &lt; O(n<sup>3</sup>) &lt; O(2<sup>n</sup>) &lt; O(n!)
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex items-center gap-4 mb-8 border-b border-slate-200 pb-4">
+                <div class="w-10 h-10 rounded-lg bg-basic-500 text-white flex items-center justify-center shadow-lg font-bold text-lg">2</div>
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800">Algoritmos de Ordenação</h2>
+                    <p class="text-xs text-slate-500 uppercase font-semibold">Associações Rápidas para a Prova</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="glass-panel p-6 rounded-3xl border-t-4 border-basic-500 card-hover">
+                    <h3 class="text-lg font-bold text-slate-800 mb-1">Bubble Sort</h3>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-3">Bolha / Troca</span>
+                    <p class="text-sm text-slate-600">Move elementos para posições adequadas trocando pares consecutivos que estão fora de ordem. Simples, porém <strong>pouco eficiente</strong> para grandes listas.</p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-3xl border-t-4 border-basic-500 card-hover">
+                    <h3 class="text-lg font-bold text-slate-800 mb-1">Insertion Sort</h3>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-3">Inserção</span>
+                    <p class="text-sm text-slate-600">Insere cada elemento em sua posição correta dentro de um subvetor já classificado à esquerda. <strong>Muito eficiente</strong> para listas que já estão quase ordenadas ou pequenas.</p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-3xl border-t-4 border-basic-500 card-hover">
+                    <h3 class="text-lg font-bold text-slate-800 mb-1">Selection Sort</h3>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-3">Seleção</span>
+                    <p class="text-sm text-slate-600">Seleciona o menor elemento do vetor e o troca com o primeiro elemento da parte não ordenada. Seu ponto forte é realizar <strong>poucas operações de troca</strong> (swap).</p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-3xl border-t-4 border-advanced-500 card-hover">
+                    <h3 class="text-lg font-bold text-slate-800 mb-1">Shell Sort</h3>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-3">Inserção</span>
+                    <p class="text-sm text-slate-600">Extensão e refinamento do InsertionSort. Utiliza uma <strong>distância (gap)</strong> para comparar e realizar trocas, diminuindo até 1. O mais eficiente entre os de ordem quadrática.</p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-3xl border-t-4 border-advanced-500 card-hover">
+                    <h3 class="text-lg font-bold text-slate-800 mb-1">Quick Sort</h3>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-3">Troca / Divisão-e-Conquista</span>
+                    <p class="text-sm text-slate-600">Elege um <strong>pivô</strong> e particiona o vetor. Muito rápido na prática, mas seu pior caso ocorre quando o pivô escolhido é um dos extremos.</p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-3xl border-t-4 border-advanced-500 card-hover">
+                    <h3 class="text-lg font-bold text-slate-800 mb-1">Merge Sort</h3>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-3">Intercalação / Divisão-e-Conquista</span>
+                    <p class="text-sm text-slate-600">Divide a lista na metade recursivamente e depois as intercala em ordem. Tempo <strong>sempre O(n log n)</strong>, garantindo consistência.</p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-3xl border-t-4 border-advanced-500 card-hover lg:col-start-2">
+                    <h3 class="text-lg font-bold text-slate-800 mb-1">Heap Sort</h3>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-3">Seleção</span>
+                    <p class="text-sm text-slate-600">Utiliza uma estrutura de árvore chamada <em>heap</em>. Vantagem: estrutura auxiliar de armazenamento fora do arranjo constante (exige pouco espaço extra).</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl shadow-md border border-slate-200 overflow-hidden mt-10">
+                <div class="p-5 bg-navy-900 flex justify-between items-center">
+                    <h3 class="text-white font-bold text-lg">Tabela de Complexidade (Memorização Obrigatória)</h3>
+                    <span class="text-yellow-400 text-xs font-bold uppercase tracking-widest bg-navy-800 px-3 py-1 rounded border border-navy-700">Decoreba</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-200">
+                                <th class="px-5 py-4 font-bold text-slate-600 uppercase text-xs">Algoritmo</th>
+                                <th class="px-5 py-4 font-bold text-slate-600 uppercase text-xs">Paradigma</th>
+                                <th class="px-5 py-4 font-bold text-slate-600 uppercase text-xs">Melhor Caso</th>
+                                <th class="px-5 py-4 font-bold text-slate-600 uppercase text-xs">Caso Médio</th>
+                                <th class="px-5 py-4 font-bold text-slate-600 uppercase text-xs">Pior Caso</th>
+                                <th class="px-5 py-4 font-bold text-slate-600 uppercase text-xs">Estabilidade</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 font-mono text-xs">
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="px-5 py-4 font-bold text-slate-800 font-sans">Bubble Sort</td>
+                                <td class="px-5 py-4 font-sans text-slate-600">Troca</td>
+                                <td class="px-5 py-4 text-green-600">O(n)</td>
+                                <td class="px-5 py-4 text-red-500">O(n<sup>2</sup>)</td>
+                                <td class="px-5 py-4 text-red-500">O(n<sup>2</sup>)</td>
+                                <td class="px-5 py-4 font-sans font-bold text-green-600">Estável</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="px-5 py-4 font-bold text-slate-800 font-sans">Insertion Sort</td>
+                                <td class="px-5 py-4 font-sans text-slate-600">Inserção</td>
+                                <td class="px-5 py-4 text-green-600">O(n)</td>
+                                <td class="px-5 py-4 text-red-500">O(n<sup>2</sup>)</td>
+                                <td class="px-5 py-4 text-red-500">O(n<sup>2</sup>)</td>
+                                <td class="px-5 py-4 font-sans font-bold text-green-600">Estável</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="px-5 py-4 font-bold text-slate-800 font-sans">Selection Sort</td>
+                                <td class="px-5 py-4 font-sans text-slate-600">Seleção</td>
+                                <td class="px-5 py-4 text-red-500">O(n<sup>2</sup>)</td>
+                                <td class="px-5 py-4 text-red-500">O(n<sup>2</sup>)</td>
+                                <td class="px-5 py-4 text-red-500">O(n<sup>2</sup>)</td>
+                                <td class="px-5 py-4 font-sans font-bold text-red-500">Instável</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="px-5 py-4 font-bold text-slate-800 font-sans">Quick Sort</td>
+                                <td class="px-5 py-4 font-sans text-slate-600">Troca (Div e Conq)</td>
+                                <td class="px-5 py-4 text-advanced-600">O(n log n)</td>
+                                <td class="px-5 py-4 text-advanced-600">O(n log n)</td>
+                                <td class="px-5 py-4 text-red-500 font-bold bg-red-50">O(n<sup>2</sup>)</td>
+                                <td class="px-5 py-4 font-sans font-bold text-red-500">Instável</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="px-5 py-4 font-bold text-slate-800 font-sans">Shell Sort</td>
+                                <td class="px-5 py-4 font-sans text-slate-600">Inserção</td>
+                                <td class="px-5 py-4 text-advanced-600">O(n log n)</td>
+                                <td class="px-5 py-4 text-warning-600">Dep. do gap</td>
+                                <td class="px-5 py-4 text-red-500">O(n<sup>2</sup>)</td>
+                                <td class="px-5 py-4 font-sans font-bold text-red-500">Instável</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="px-5 py-4 font-bold text-slate-800 font-sans">Merge Sort</td>
+                                <td class="px-5 py-4 font-sans text-slate-600">Intercalação (Div e Conq)</td>
+                                <td class="px-5 py-4 text-advanced-600">O(n log n)</td>
+                                <td class="px-5 py-4 text-advanced-600">O(n log n)</td>
+                                <td class="px-5 py-4 text-advanced-600">O(n log n)</td>
+                                <td class="px-5 py-4 font-sans font-bold text-green-600">Estável</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="px-5 py-4 font-bold text-slate-800 font-sans">Heap Sort</td>
+                                <td class="px-5 py-4 font-sans text-slate-600">Seleção</td>
+                                <td class="px-5 py-4 text-advanced-600">O(n log n)</td>
+                                <td class="px-5 py-4 text-advanced-600">O(n log n)</td>
+                                <td class="px-5 py-4 text-advanced-600">O(n log n)</td>
+                                <td class="px-5 py-4 font-sans font-bold text-red-500">Instável</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex items-center gap-4 mb-8 border-b border-slate-200 pb-4">
+                <div class="w-10 h-10 rounded-lg bg-search-500 text-white flex items-center justify-center shadow-lg font-bold text-lg">3</div>
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800">Algoritmos de Busca (Pesquisa)</h2>
+                    <p class="text-xs text-slate-500 uppercase font-semibold">Eficiência: de um em um vs. Dividir para Pesquisar</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="glass-panel p-6 rounded-3xl border-t-4 border-search-500 card-hover">
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">Busca Sequencial (Linear)</h3>
+                    <p class="text-sm text-slate-600 mb-4">Inspeciona posição por posição desde o início até achar o elemento ou chegar ao fim do vetor.</p>
+                    <ul class="text-sm text-slate-600 space-y-2 mb-4">
+                        <li><strong>Pré-requisito:</strong> Funciona em vetores ordenados ou desordenados.</li>
+                        <li><strong>Uso:</strong> Inaceitável para grandes volumes de dados, útil em listas pequenas e mutáveis.</li>
+                    </ul>
+                    <div class="bg-slate-50 p-3 rounded-lg text-sm font-mono border border-slate-100">
+                        Melhor (Início): <span class="text-green-600 font-bold">O(1)</span><br>
+                        Pior / Médio: <span class="text-red-500 font-bold">O(n)</span>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-3xl border-t-4 border-search-500 card-hover">
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">Busca Binária</h3>
+                    <p class="text-sm text-slate-600 mb-4">Usa Divisão-e-Conquista. Compara com o elemento central e descarta metade do vetor a cada iteração.</p>
+                    <ul class="text-sm text-slate-600 space-y-2 mb-4">
+                        <li class="bg-red-50 text-red-700 p-2 rounded text-xs font-bold border border-red-100">Pré-requisito Obrigatório: O vetor precisa estar ORDENADO.</li>
+                        <li><strong>Uso:</strong> Muito mais eficiente e rápida que a Linear para grandes coleções.</li>
+                    </ul>
+                    <div class="bg-slate-50 p-3 rounded-lg text-sm font-mono border border-slate-100">
+                        Pior / Médio: <span class="text-advanced-600 font-bold">O(log<sub>2</sub> n)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-navy-50 border border-navy-200 p-6 rounded-2xl shadow-sm">
+            <h3 class="text-lg font-bold text-navy-800 mb-2 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-navy-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Dica de Revisão Final
+            </h3>
+            <p class="text-sm text-slate-700 leading-relaxed">
+                Concentre-se em não confundir os algoritmos <strong>estáveis</strong> com os <strong>instáveis</strong> e atente-se ao calcanhar de aquiles do <strong>QuickSort</strong> (seu pior caso ser <span class="font-mono font-bold">O(n<sup>2</sup>)</span>, enquanto Merge e Heap garantem <span class="font-mono font-bold">O(n log n)</span>).
+            </p>
+        </section>
+
+        <footer class="text-center py-8 mt-10 border-t border-slate-200">
+            <p class="text-slate-400 text-xs uppercase tracking-widest font-bold">Material de Revisão • Marinha do Brasil (CP-T)</p>
+        </footer>
+
+    </main>
+</body>
+</html>

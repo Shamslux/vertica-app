@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Tático SMV 2026 - TAF e Saúde</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f3f4f6; }
+        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        tr:nth-child(even) { background-color: #f9fafb; }
+        tr:hover { background-color: #eff6ff; }
+        .exam-row:hover { background-color: #f8fafc; }
+    </style>
+</head>
+<body class="text-slate-800 pb-20">
+
+    <nav class="bg-blue-900 text-white p-4 shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            
+            <div class="flex items-center gap-3">
+                <i class="fas fa-anchor text-2xl text-yellow-400"></i>
+                <div>
+                    <h1 class="text-xl font-bold leading-none">SMV Oficiais 2026</h1>
+                    <span class="text-xs text-blue-200 opacity-80">Desenvolvimento de Sistemas (11 Vagas)</span>
+                </div>
+            </div>
+
+            <div class="flex bg-blue-800 rounded-lg p-1 overflow-x-auto">
+                <a href="index.html" class="px-4 py-1.5 rounded-md text-sm font-medium transition hover:bg-blue-700 hover:text-white text-blue-100 whitespace-nowrap">
+                    <i class="fas fa-list-alt mr-2"></i>Edital
+                </a>
+                <a href="controle.html" class="px-4 py-1.5 rounded-md text-sm font-medium transition hover:bg-blue-700 hover:text-white text-blue-100 whitespace-nowrap">
+                    <i class="fas fa-chart-line mr-2"></i>Controle & Ciclo
+                </a>
+                <a href="cronograma.html" class="px-4 py-1.5 rounded-md text-sm font-medium transition hover:bg-blue-700 hover:text-white text-blue-100 whitespace-nowrap">
+                    <i class="fas fa-calendar-alt mr-2"></i>Cronograma
+                </a>
+                <a href="aulas.html" class="px-4 py-1.5 rounded-md text-sm font-medium transition hover:bg-blue-700 hover:text-white text-blue-100 whitespace-nowrap">
+                    <i class="fas fa-book mr-2"></i>Aulas
+                </a>
+                <a href="painel_tatico.html" class="px-4 py-1.5 rounded-md text-sm font-medium bg-blue-700 text-white shadow-sm whitespace-nowrap">
+                    <i class="fas fa-heartbeat mr-2"></i>TAF & Saúde
+                </a>
+            </div>
+
+            <div class="flex gap-4 text-sm">
+                <button onclick="exportData()" class="hover:text-yellow-400 transition" title="Baixar Backup"><i class="fas fa-download"></i></button>
+                <label class="cursor-pointer hover:text-yellow-400 transition" title="Restaurar Backup">
+                    <i class="fas fa-upload"></i>
+                    <input type="file" id="importFile" class="hidden" onchange="importData(this)">
+                </label>
+                <button onclick="resetData()" class="text-red-300 hover:text-red-100 transition" title="Apagar Tudo"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto p-4 md:p-6 mt-4 space-y-6">
+
+        <div class="bg-gradient-to-r from-blue-800 to-blue-600 rounded-xl shadow-lg p-6 text-white flex flex-col md:flex-row items-center justify-between border border-blue-400">
+            <div class="mb-4 md:mb-0">
+                <span class="text-blue-200 text-sm font-bold uppercase tracking-widest"><i class="fas fa-bell mr-2 text-yellow-400 animate-pulse"></i>Próximo Evento Oficial</span>
+                <h2 id="next-event-title" class="text-2xl font-extrabold mt-1">Carregando...</h2>
+                <p id="next-event-date" class="text-sm text-blue-100 mt-1 opacity-80"></p>
+            </div>
+            <div class="flex gap-4 text-center">
+                <div class="bg-white/10 rounded-lg p-3 min-w-[80px] backdrop-blur-sm border border-white/20">
+                    <span id="cd-days" class="block text-3xl font-bold text-yellow-400">00</span>
+                    <span class="text-xs uppercase font-semibold">Dias</span>
+                </div>
+                <div class="bg-white/10 rounded-lg p-3 min-w-[80px] backdrop-blur-sm border border-white/20">
+                    <span id="cd-hours" class="block text-3xl font-bold">00</span>
+                    <span class="text-xs uppercase font-semibold">Horas</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            <div class="glass-card rounded-xl shadow-md p-5 border border-gray-200">
+                <div class="flex justify-between items-center mb-4 border-b border-gray-200 pb-3">
+                    <h2 class="font-bold text-lg text-blue-900"><i class="fas fa-file-medical mr-2 text-red-500"></i>Inspeção de Saúde (IS)</h2>
+                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded font-bold border">Alvo: 11/05/2026</span>
+                </div>
+                
+                <p class="text-xs text-gray-500 mb-4 bg-blue-50 p-2 rounded border border-blue-100">
+                    <i class="fas fa-info-circle mr-1 text-blue-500"></i> Insira a data de coleta. A validade padrão estimada é de <strong>1 mês</strong>. O sistema avisará se o exame vencer antes do início oficial da IS.
+                </p>
+
+                <div class="space-y-3 max-h-[500px] overflow-y-auto pr-2" id="exams-container">
+                    </div>
+            </div>
+
+            <div class="glass-card rounded-xl shadow-md p-5 border border-gray-200 flex flex-col">
+                <div class="flex justify-between items-center mb-4 border-b border-gray-200 pb-3">
+                    <h2 class="font-bold text-lg text-blue-900"><i class="fas fa-running mr-2 text-emerald-500"></i>Performance TAF</h2>
+                    
+                    <select id="user-gender" onchange="renderTaf()" class="border border-blue-300 bg-blue-50 text-blue-900 text-xs rounded p-1 font-bold outline-none">
+                        <option value="M">Masculino (16m / 50s)</option>
+                        <option value="F">Feminino (17m / 60s)</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 mb-5">
+                    <div id="kpi-run" class="bg-white border rounded-lg p-3 shadow-sm flex flex-col justify-between">
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-[10px] font-bold text-gray-500 uppercase">Corrida (2400m)</span>
+                            <i class="fas fa-running text-amber-500"></i>
+                        </div>
+                        <div id="kpi-run-status" class="text-xl font-bold text-gray-400">-</div>
+                        <div id="kpi-run-detail" class="text-[10px] text-gray-500 mt-1">Nenhum treino</div>
+                    </div>
+                    
+                    <div id="kpi-swim" class="bg-white border rounded-lg p-3 shadow-sm flex flex-col justify-between">
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-[10px] font-bold text-gray-500 uppercase">Natação (25m)</span>
+                            <i class="fas fa-swimmer text-blue-500"></i>
+                        </div>
+                        <div id="kpi-swim-status" class="text-xl font-bold text-gray-400">-</div>
+                        <div id="kpi-swim-detail" class="text-[10px] text-gray-500 mt-1">Nenhum treino</div>
+                    </div>
+                </div>
+
+                <form id="tafForm" onsubmit="handleTafSubmit(event)" class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6 bg-slate-50 p-3 rounded-lg border border-slate-200">
+                    <div class="col-span-2 md:col-span-1">
+                        <label class="block text-[10px] uppercase font-bold text-gray-500 mb-1">Data</label>
+                        <input type="date" id="taf-date" required class="w-full border rounded p-1.5 text-sm outline-none focus:border-emerald-500">
+                    </div>
+                    <div class="col-span-2 md:col-span-1">
+                        <label class="block text-[10px] uppercase font-bold text-gray-500 mb-1">Modalidade</label>
+                        <select id="taf-type" required class="w-full border rounded p-1.5 text-sm outline-none focus:border-emerald-500" onchange="toggleTafInputs()">
+                            <option value="Corrida">Corrida</option>
+                            <option value="Natação">Natação</option>
+                        </select>
+                    </div>
+                    <div class="col-span-1" id="div-dist">
+                        <label class="block text-[10px] uppercase font-bold text-gray-500 mb-1">Distância (m)</label>
+                        <input type="number" id="taf-dist" placeholder="Ex: 2400" required class="w-full border rounded p-1.5 text-sm">
+                    </div>
+                    <div class="col-span-1">
+                        <label class="block text-[10px] uppercase font-bold text-gray-500 mb-1">Tempo (Min:Seg)</label>
+                        <input type="text" id="taf-time" placeholder="Ex: 15:30" required pattern="^[0-9]+:[0-5][0-9]$" title="Formato MM:SS" class="w-full border rounded p-1.5 text-sm">
+                    </div>
+                    <div class="col-span-2 md:col-span-4 flex justify-end">
+                        <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-1.5 px-4 rounded text-sm transition shadow">
+                            <i class="fas fa-plus mr-1"></i> Registrar Treino
+                        </button>
+                    </div>
+                </form>
+
+                <div class="overflow-x-auto border rounded-lg flex-grow">
+                    <table class="w-full text-sm text-left">
+                        <thead class="text-xs text-gray-100 uppercase bg-slate-700">
+                            <tr>
+                                <th class="px-3 py-2">Data</th>
+                                <th class="px-3 py-2">Mod.</th>
+                                <th class="px-3 py-2 text-center">Marca</th>
+                                <th class="px-3 py-2 text-center">Performance</th>
+                                <th class="px-3 py-2 text-center"><i class="fas fa-cog"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody id="taf-table-body" class="divide-y divide-gray-200 bg-white">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // ==========================================
+        // 1. DADOS DO CRONOGRAMA & CONTAGEM REGRESSIVA
+        // ==========================================
+        const timeline = [
+            { date: '2026-02-24T23:59:59', title: 'Recurso da Prova Escrita (Início)' },
+            { date: '2026-04-08T23:59:59', title: 'Gabarito Final' },
+            { date: '2026-04-17T23:59:59', title: 'Resultado da Prova Objetiva' },
+            { date: '2026-04-20T23:59:59', title: 'Convocação Eventos Complementares' },
+            { date: '2026-05-11T00:00:00', title: 'Início da Inspeção de Saúde (IS)' },
+            { date: '2026-05-18T00:00:00', title: 'Início do TAF' },
+            { date: '2026-08-04T23:59:59', title: 'Resultado Final' },
+            { date: '2026-08-10T00:00:00', title: 'Apresentação' }
+        ];
+
+        function updateCountdown() {
+            const now = new Date();
+            const nextEvent = timeline.find(ev => new Date(ev.date) > now);
+
+            if (nextEvent) {
+                document.getElementById('next-event-title').innerText = nextEvent.title;
+                const eventDate = new Date(nextEvent.date);
+                document.getElementById('next-event-date').innerText = eventDate.toLocaleDateString('pt-BR');
+
+                const diff = eventDate - now;
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+
+                document.getElementById('cd-days').innerText = String(days).padStart(2, '0');
+                document.getElementById('cd-hours').innerText = String(hours).padStart(2, '0');
+            } else {
+                document.getElementById('next-event-title').innerText = "Fim do Processo!";
+                document.getElementById('cd-days').innerText = "00";
+                document.getElementById('cd-hours').innerText = "00";
+            }
+        }
+        setInterval(updateCountdown, 1000 * 60 * 60);
+        updateCountdown();
+
+        // ==========================================
+        // 2. CONTROLE DE EXAMES MÉDICOS (IS)
+        // ==========================================
+        const EXAMS_KEY = 'smv26_exams_v1';
+        const isStartDate = new Date('2026-05-11T00:00:00'); 
+        
+        const examList = [
+            "Hemograma completo com plaquetas", "Glicemia em jejum", "Dosagem de creatinina", 
+            "TGO ou AST", "TGP ou ALT", "Dosagem do PSA total", "Colesterol total e frações", 
+            "Triglicerídeos", "EAS", "Anti-HIV", "VDRL (Sífilis)", "Raios-X de tórax", "ECG"
+        ];
+
+        let savedExams = JSON.parse(localStorage.getItem(EXAMS_KEY)) || {};
+
+        function renderExams() {
+            const container = document.getElementById('exams-container');
+            container.innerHTML = '';
+
+            examList.forEach((exam, index) => {
+                const data = savedExams[index] || { date: '' };
+                const hasDate = data.date !== '';
+                
+                let statusHtml = `<span class="text-[10px] uppercase font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded border">Pendente</span>`;
+                
+                if (hasDate) {
+                    const examDate = new Date(data.date);
+                    const validUntil = new Date(examDate);
+                    validUntil.setMonth(validUntil.getMonth() + 1);
+                    
+                    const isValidForIS = validUntil >= isStartDate;
+
+                    if (isValidForIS) {
+                        statusHtml = `<span class="text-[10px] uppercase font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded border border-emerald-300" title="Válido até ${validUntil.toLocaleDateString('pt-BR')}">OK p/ IS</span>`;
+                    } else {
+                        statusHtml = `<span class="text-[10px] uppercase font-bold text-red-700 bg-red-100 px-2 py-0.5 rounded border border-red-300" title="Vence em ${validUntil.toLocaleDateString('pt-BR')} (Antes da IS)">Vence Antes</span>`;
+                    }
+                }
+
+                container.innerHTML += `
+                    <div class="exam-row flex items-center justify-between p-2 rounded border border-transparent hover:border-gray-200 transition">
+                        <div class="flex items-center gap-2 w-1/2">
+                            <i class="fas fa-vial text-blue-300 text-xs"></i>
+                            <span class="text-xs font-semibold text-gray-700 truncate" title="${exam}">${exam}</span>
+                        </div>
+                        <div class="flex items-center gap-3 w-1/2 justify-end">
+                            ${statusHtml}
+                            <input type="date" value="${data.date}" onchange="saveExam(${index}, this.value)" class="border rounded p-1 text-xs outline-none focus:border-blue-500 w-[110px] text-gray-600 bg-white">
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function saveExam(index, dateValue) {
+            savedExams[index] = { date: dateValue };
+            localStorage.setItem(EXAMS_KEY, JSON.stringify(savedExams));
+            renderExams();
+        }
+
+        // ==========================================
+        // 3. CONTROLE DO TAF (CORRIDA / NATAÇÃO)
+        // ==========================================
+        const TAF_KEY = 'smv26_taf_v1';
+        let tafLogs = JSON.parse(localStorage.getItem(TAF_KEY)) || [];
+
+        function toggleTafInputs() {
+            const type = document.getElementById('taf-type').value;
+            const distInput = document.getElementById('taf-dist');
+            if(type === 'Natação') {
+                distInput.value = '25'; // Ajustado para 25m conforme edital
+                distInput.disabled = true;
+                distInput.classList.add('bg-gray-100');
+            } else {
+                distInput.value = '';
+                distInput.disabled = false;
+                distInput.classList.remove('bg-gray-100');
+            }
+        }
+
+        function handleTafSubmit(e) {
+            e.preventDefault();
+            const date = document.getElementById('taf-date').value;
+            const type = document.getElementById('taf-type').value;
+            const dist = parseFloat(document.getElementById('taf-dist').value);
+            const timeStr = document.getElementById('taf-time').value;
+
+            const [min, seg] = timeStr.split(':').map(Number);
+            const totalSeconds = (min * 60) + seg;
+
+            let performance = '';
+            // paceSec: Segundos que leva para fazer 1km (Corrida) ou 1m (Natação)
+            let paceSec = 0; 
+
+            if (type === 'Corrida') {
+                const hours = totalSeconds / 3600;
+                const kmh = (dist / 1000) / hours;
+                
+                paceSec = totalSeconds / (dist / 1000);
+                const pMin = Math.floor(paceSec / 60);
+                const pSeg = Math.round(paceSec % 60);
+                performance = `${kmh.toFixed(1)} km/h | ${pMin}'${String(pSeg).padStart(2,'0')}"/km`;
+            } else {
+                paceSec = totalSeconds / dist; // Segundos por metro
+                performance = `${timeStr} (Marca)`;
+            }
+
+            tafLogs.push({ id: Date.now(), date, type, dist, timeStr, totalSeconds, paceSec, performance });
+            
+            tafLogs.sort((a, b) => new Date(b.date) - new Date(a.date));
+            localStorage.setItem(TAF_KEY, JSON.stringify(tafLogs));
+            
+            document.getElementById('tafForm').reset();
+            toggleTafInputs();
+            renderTaf();
+        }
+
+        function deleteTaf(id) {
+            if(confirm('Apagar este registro?')) {
+                tafLogs = tafLogs.filter(t => t.id !== id);
+                localStorage.setItem(TAF_KEY, JSON.stringify(tafLogs));
+                renderTaf();
+            }
+        }
+
+        function formatSecToMMSS(seconds) {
+            const m = Math.floor(seconds / 60);
+            const s = Math.round(seconds % 60);
+            return `${m}:${String(s).padStart(2, '0')}`;
+        }
+
+        // Atualiza os Painéis (KPIs) com base no gênero e treinos
+        function updateKPIs() {
+            const gender = document.getElementById('user-gender').value;
+            
+            // Metas Oficiais em Segundos
+            const targetRunSec = gender === 'M' ? 16 * 60 : 17 * 60;
+            const targetSwimSec = gender === 'M' ? 50 : 60;
+            
+            // Pace Meta (Segundos por Km / Segundos por Metro)
+            const targetRunPace = targetRunSec / 2.4; 
+            const targetSwimPace = targetSwimSec / 25; 
+
+            // -- CORRIDA KPI --
+            const runs = tafLogs.filter(t => t.type === 'Corrida');
+            const kpiRunStatus = document.getElementById('kpi-run-status');
+            const kpiRunDetail = document.getElementById('kpi-run-detail');
+            const kpiRunBox = document.getElementById('kpi-run');
+
+            if (runs.length > 0) {
+                // Pega o melhor pace (menor tempo por km)
+                const bestRunPace = Math.min(...runs.map(r => r.paceSec));
+                const projected2400mTime = bestRunPace * 2.4;
+                
+                if (projected2400mTime <= targetRunSec) {
+                    kpiRunStatus.innerHTML = `<span class="text-emerald-500"><i class="fas fa-check-circle mr-1"></i>APTO</span>`;
+                    kpiRunBox.className = "bg-emerald-50 border border-emerald-200 rounded-lg p-3 shadow-sm flex flex-col justify-between";
+                    const margem = targetRunSec - projected2400mTime;
+                    kpiRunDetail.innerHTML = `Proj: <b>${formatSecToMMSS(projected2400mTime)}</b> (Folga: ${formatSecToMMSS(margem)})<br>Meta: ${formatSecToMMSS(targetRunSec)}`;
+                } else {
+                    kpiRunStatus.innerHTML = `<span class="text-red-500"><i class="fas fa-exclamation-triangle mr-1"></i>INAPTO</span>`;
+                    kpiRunBox.className = "bg-red-50 border border-red-200 rounded-lg p-3 shadow-sm flex flex-col justify-between";
+                    const falta = projected2400mTime - targetRunSec;
+                    kpiRunDetail.innerHTML = `Proj: <b>${formatSecToMMSS(projected2400mTime)}</b> (Falta tirar: ${formatSecToMMSS(falta)})<br>Meta: ${formatSecToMMSS(targetRunSec)}`;
+                }
+            } else {
+                kpiRunStatus.innerHTML = `<span class="text-gray-400">-</span>`;
+                kpiRunDetail.innerHTML = `Meta: ${formatSecToMMSS(targetRunSec)}`;
+                kpiRunBox.className = "bg-white border rounded-lg p-3 shadow-sm flex flex-col justify-between";
+            }
+
+            // -- NATAÇÃO KPI --
+            const swims = tafLogs.filter(t => t.type === 'Natação');
+            const kpiSwimStatus = document.getElementById('kpi-swim-status');
+            const kpiSwimDetail = document.getElementById('kpi-swim-detail');
+            const kpiSwimBox = document.getElementById('kpi-swim');
+
+            if (swims.length > 0) {
+                const bestSwimPace = Math.min(...swims.map(s => s.paceSec));
+                const projected25mTime = bestSwimPace * 25;
+
+                if (projected25mTime <= targetSwimSec) {
+                    kpiSwimStatus.innerHTML = `<span class="text-emerald-500"><i class="fas fa-check-circle mr-1"></i>APTO</span>`;
+                    kpiSwimBox.className = "bg-emerald-50 border border-emerald-200 rounded-lg p-3 shadow-sm flex flex-col justify-between";
+                    kpiSwimDetail.innerHTML = `Proj 25m: <b>${formatSecToMMSS(projected25mTime)}</b><br>Meta: ${targetSwimSec}s`;
+                } else {
+                    kpiSwimStatus.innerHTML = `<span class="text-red-500"><i class="fas fa-exclamation-triangle mr-1"></i>INAPTO</span>`;
+                    kpiSwimBox.className = "bg-red-50 border border-red-200 rounded-lg p-3 shadow-sm flex flex-col justify-between";
+                    kpiSwimDetail.innerHTML = `Proj 25m: <b>${formatSecToMMSS(projected25mTime)}</b><br>Meta: ${targetSwimSec}s`;
+                }
+            } else {
+                kpiSwimStatus.innerHTML = `<span class="text-gray-400">-</span>`;
+                kpiSwimDetail.innerHTML = `Meta: ${targetSwimSec}s`;
+                kpiSwimBox.className = "bg-white border rounded-lg p-3 shadow-sm flex flex-col justify-between";
+            }
+        }
+
+        function renderTaf() {
+            const tbody = document.getElementById('taf-table-body');
+            tbody.innerHTML = '';
+            
+            updateKPIs(); // Atualiza os placares sempre que renderizar a tabela
+            
+            if(tafLogs.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center p-4 text-gray-400 text-xs">Nenhum treino registrado.</td></tr>`;
+                return;
+            }
+
+            tafLogs.forEach(log => {
+                const dateParts = log.date.split('-');
+                const dateBR = `${dateParts[2]}/${dateParts[1]}`;
+                const icon = log.type === 'Corrida' ? '<i class="fas fa-running text-amber-500"></i>' : '<i class="fas fa-swimmer text-blue-500"></i>';
+                
+                tbody.innerHTML += `
+                    <tr class="border-b transition">
+                        <td class="px-3 py-2 text-gray-600 font-mono">${dateBR}</td>
+                        <td class="px-3 py-2 font-semibold text-gray-700">${icon} ${log.type}</td>
+                        <td class="px-3 py-2 text-center text-xs">
+                            <span class="block text-gray-800">${log.dist}m</span>
+                            <span class="block text-gray-500 font-mono">${log.timeStr}</span>
+                        </td>
+                        <td class="px-3 py-2 text-center text-xs font-semibold text-emerald-700">${log.performance}</td>
+                        <td class="px-3 py-2 text-center">
+                            <button onclick="deleteTaf(${log.id})" class="text-red-400 hover:text-red-600" title="Excluir"><i class="fas fa-times"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // ==========================================
+        // 4. FUNÇÕES DE BACKUP / RESTAURAÇÃO
+        // ==========================================
+        function exportData() {
+            const backupData = { exams: savedExams, taf: tafLogs };
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
+            const downloadNode = document.createElement('a');
+            downloadNode.setAttribute("href", dataStr);
+            downloadNode.setAttribute("download", "backup_taf_saude_smv2026.json");
+            document.body.appendChild(downloadNode);
+            downloadNode.click();
+            downloadNode.remove();
+        }
+
+        function importData(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if(parsed && (parsed.exams || parsed.taf)) {
+                        if(parsed.exams) {
+                            savedExams = parsed.exams;
+                            localStorage.setItem(EXAMS_KEY, JSON.stringify(savedExams));
+                        }
+                        if(parsed.taf) {
+                            tafLogs = parsed.taf;
+                            localStorage.setItem(TAF_KEY, JSON.stringify(tafLogs));
+                        }
+                        renderExams();
+                        renderTaf();
+                        alert("Dados importados com sucesso!");
+                    }
+                } catch (err) { alert("Erro ao ler arquivo."); }
+                input.value = "";
+            };
+            reader.readAsText(file);
+        }
+
+        function resetData() {
+            if(confirm("Apagar TODO o histórico?")) {
+                localStorage.removeItem(EXAMS_KEY);
+                localStorage.removeItem(TAF_KEY);
+                savedExams = {};
+                tafLogs = [];
+                renderExams();
+                renderTaf();
+            }
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('taf-date').valueAsDate = new Date();
+            renderExams();
+            renderTaf();
+            toggleTafInputs();
+        });
+    </script>
+</body>
+</html>

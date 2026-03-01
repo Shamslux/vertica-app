@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumo Estratégico: Metodologias Ágeis - TI Concursos</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        agile: { 50: '#eef2ff', 100: '#e0e7ff', 500: '#6366f1', 700: '#4338ca', 900: '#312e81' },
+                        lean: { 50: '#f0fdfa', 100: '#ccfbf1', 500: '#14b8a6', 700: '#0f766e', 900: '#134e4a' },
+                        alert: { 50: '#fff1f2', 100: '#ffe4e6', 500: '#f43f5e', 700: '#be123c', 900: '#881337' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .hover-lift { transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease-out; }
+        .hover-lift:hover { transform: translateY(-4px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
+        .focus-ring { animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(244, 63, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased leading-relaxed font-sans pb-10">
+
+    <header class="navbar bg-base-100 border-b border-slate-200 sticky top-0 z-50 shadow-sm bg-opacity-90 backdrop-blur-md px-6">
+        <div class="flex-1 gap-4">
+            <div class="avatar placeholder">
+                <div class="bg-agile-900 text-neutral-content rounded-xl w-12 shadow-lg">
+                    <span class="text-xl font-extrabold">TI</span>
+                </div>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold text-slate-900 leading-tight">Engenharia de Software</h1>
+                <p class="text-xs text-slate-500 font-medium tracking-wide uppercase">Foco Estratégico: Bancas CESPE, FCC e FGV</p>
+            </div>
+        </div>
+        <div class="flex-none hidden md:flex gap-2">
+            <div class="badge badge-primary badge-outline text-[10px] font-bold uppercase py-3">Manifesto Ágil</div>
+            <div class="badge badge-accent badge-outline text-[10px] font-bold uppercase py-3">Lean IT</div>
+            <div class="badge badge-secondary badge-outline text-[10px] font-bold uppercase py-3">Pegadinhas</div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-10 space-y-24">
+
+        <section class="text-center max-w-3xl mx-auto">
+            <div class="badge badge-primary mb-4 font-bold tracking-widest uppercase p-4 shadow-sm text-xs">Resumo Estratégico</div>
+            <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight">Metodologias Ágeis</h2>
+            <div class="text-slate-600 text-base leading-relaxed space-y-4">
+                <p>Olá, concurseiro(a)! Como especialista em preparação para concursos na área de TI, analisei o seu material. O professor destaca muito bem que, em Metodologias Ágeis, você não precisa decorar tudo, mas precisa compreender profundamente a filosofia por trás do modelo.</p>
+                <p>Preparei um Resumo Estratégico focado cirurgicamente nos tópicos classificados como de <strong>ALTA INCIDÊNCIA</strong> em provas, além de trazer as principais "pegadinhas". Vamos lá! 🚀</p>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex items-center gap-4 mb-8">
+                <div class="badge badge-primary badge-lg w-10 h-10 font-bold text-lg shadow-lg">1</div>
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800">A Base de Tudo: O Manifesto Ágil</h2>
+                    <div class="badge badge-error gap-1 text-[10px] uppercase font-bold mt-1 shadow-sm"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-3 h-3 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Incidência Alta</div>
+                </div>
+            </div>
+            
+            <p class="text-sm text-slate-600 mb-8 border-l-4 border-primary pl-4 py-1">Surgido em 2001, o Manifesto Ágil estabeleceu 4 valores fundamentais. <strong class="text-primary">A regra de ouro para provas:</strong> os itens da direita têm valor, mas valoriza-se <strong>MAIS</strong> os itens da esquerda.</p>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="card bg-base-100 shadow-md border border-base-200 hover-lift">
+                    <div class="card-body p-5">
+                        <div class="flex flex-col xl:flex-row items-start xl:items-center gap-2 mb-3">
+                            <span class="text-sm font-bold text-primary">Indivíduos e interações</span>
+                            <div class="badge badge-neutral text-[10px] font-bold">MAIS QUE</div>
+                            <span class="text-sm font-medium text-slate-400 line-through">processos e ferramentas</span>
+                        </div>
+                        <p class="text-xs text-slate-600"><strong>Por quê?</strong> O desenvolvimento é uma atividade humana. As pessoas resolvem os problemas, não as ferramentas.</p>
+                    </div>
+                </div>
+                <div class="card bg-base-100 shadow-md border border-base-200 hover-lift">
+                    <div class="card-body p-5">
+                        <div class="flex flex-col xl:flex-row items-start xl:items-center gap-2 mb-3">
+                            <span class="text-sm font-bold text-primary">Software funcionando</span>
+                            <div class="badge badge-neutral text-[10px] font-bold">MAIS QUE</div>
+                            <span class="text-sm font-medium text-slate-400 line-through">documentação abrangente</span>
+                        </div>
+                        <p class="text-xs text-slate-600"><strong>Atenção!</strong> O ágil NÃO elimina a documentação! Produz a estritamente necessária, focando no sistema rodando.</p>
+                    </div>
+                </div>
+                <div class="card bg-base-100 shadow-md border border-base-200 hover-lift">
+                    <div class="card-body p-5">
+                        <div class="flex flex-col xl:flex-row items-start xl:items-center gap-2 mb-3">
+                            <span class="text-sm font-bold text-primary">Colaboração com cliente</span>
+                            <div class="badge badge-neutral text-[10px] font-bold">MAIS QUE</div>
+                            <span class="text-sm font-medium text-slate-400 line-through">negociação de contratos</span>
+                        </div>
+                        <p class="text-xs text-slate-600"><strong>Por quê?</strong> O cliente deve estar envolvido continuamente. Contrato ágil comum: <em>Tempo Fixo e Escopo Variável</em>.</p>
+                    </div>
+                </div>
+                <div class="card bg-base-100 shadow-md border border-base-200 hover-lift">
+                    <div class="card-body p-5">
+                        <div class="flex flex-col xl:flex-row items-start xl:items-center gap-2 mb-3">
+                            <span class="text-sm font-bold text-primary">Responder a mudanças</span>
+                            <div class="badge badge-neutral text-[10px] font-bold">MAIS QUE</div>
+                            <span class="text-sm font-medium text-slate-400 line-through">seguir um plano</span>
+                        </div>
+                        <p class="text-xs text-slate-600"><strong>Por quê?</strong> O planejamento deve ser flexível para se adaptar às mudanças constantes do mercado.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex items-center gap-4 mb-8">
+                <div class="badge bg-slate-800 text-white badge-lg w-10 h-10 font-bold text-lg shadow-lg">2</div>
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800">Os 12 Princípios Ágeis</h2>
+                    <div class="badge badge-error gap-1 text-[10px] uppercase font-bold mt-1 shadow-sm"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-3 h-3 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Incidência Alta</div>
+                </div>
+            </div>
+            
+            <div class="card bg-base-100 border border-base-200 shadow-sm">
+                <div class="card-body p-6 md:p-8">
+                    <p class="text-sm text-slate-500 mb-6 italic">As bancas adoram trocar palavras destes princípios para criar assertivas falsas. Memorize as ideias centrais:</p>
+                    
+                    <ul class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <p class="text-xs text-slate-700 leading-relaxed"><strong>Prioridade nº 1:</strong> Satisfazer o cliente através de entregas contínuas e adiantadas de software com valor.</p>
+                        </li>
+                        <li class="flex items-start gap-3 bg-red-50 p-2 rounded-lg -m-2">
+                            <svg class="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <p class="text-xs text-slate-700 leading-relaxed"><strong>Mudanças BEM-VINDAS:</strong> Aceite mudanças, mesmo no final (tardiamente). <em>(Bancas mentem dizendo que são proibidas!)</em>.</p>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <p class="text-xs text-slate-700 leading-relaxed"><strong>Entregas Frequentes:</strong> Software funcionando na escala de semanas a meses (preferência pela menor).</p>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <p class="text-xs text-slate-700 leading-relaxed"><strong>Trabalho Diário:</strong> Clientes e desenvolvedores devem trabalhar em conjunto e diariamente.</p>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <p class="text-xs text-slate-700 leading-relaxed"><strong>Conversa Face a Face:</strong> Método mais eficiente de transmitir informações (fuja da burocracia de e-mails).</p>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <p class="text-xs text-slate-700 leading-relaxed"><strong>Medida de Progresso:</strong> Software funcionando é a medida primária de avanço.</p>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <p class="text-xs text-slate-700 leading-relaxed"><strong>Simplicidade essencial:</strong> A arte de maximizar a quantidade de trabalho que <em>não precisou ser feito</em>.</p>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <p class="text-xs text-slate-700 leading-relaxed"><strong>Auto-organização:</strong> Melhores arquiteturas emergem de equipes sem microgerenciamento.</p>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <p class="text-xs text-slate-700 leading-relaxed"><strong>Melhoria Contínua:</strong> Em intervalos regulares, a equipe reflete e ajusta seu comportamento.</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid lg:grid-cols-2 gap-12 lg:gap-8">
+            <div class="flex flex-col w-full">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="badge badge-neutral badge-sm w-6 h-6">3</div>
+                    <h3 class="text-lg font-bold text-slate-800 uppercase tracking-tight">Agilidade <span class="text-alert-500">NÃO É</span> Velocidade</h3>
+                </div>
+                
+                <div class="flex flex-col md:flex-row w-full h-full items-stretch shadow-sm border border-base-200 rounded-box overflow-hidden">
+                    <div class="grid flex-grow card bg-agile-50 place-items-start p-5">
+                        <h4 class="font-bold text-primary text-sm mb-2">Agilidade</h4>
+                        <p class="text-xs text-slate-700">Capacidade de reagir e se adaptar a mudanças rapidamente frente a incertezas.</p>
+                    </div> 
+                    <div class="divider md:divider-horizontal text-xs font-bold text-slate-300 m-0 md:m-1">VS</div> 
+                    <div class="grid flex-grow card bg-slate-100 place-items-start p-5">
+                        <h4 class="font-bold text-slate-700 text-sm mb-2">Velocidade</h4>
+                        <p class="text-xs text-slate-600">Quão rápido se entrega. Você pode ir rápido na direção errada (velocidade sem agilidade).</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col w-full">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="badge badge-accent badge-sm w-6 h-6 text-white shadow-md shadow-accent/40">5</div>
+                    <h3 class="text-lg font-bold text-slate-800 uppercase tracking-tight">Lean vs. Ágil</h3>
+                </div>
+                
+                <div class="flex flex-col md:flex-row w-full h-full items-stretch shadow-sm border border-base-200 rounded-box overflow-hidden">
+                    <div class="grid flex-grow card bg-lean-50 place-items-start p-5">
+                        <h4 class="font-bold text-accent text-sm mb-2">Foco Lean</h4>
+                        <p class="text-xs text-slate-700">Eliminar desperdícios, otimização do todo, adiar decisões e entregas rápidas.</p>
+                    </div> 
+                    <div class="divider md:divider-horizontal text-xs font-bold text-slate-300 m-0 md:m-1">VS</div> 
+                    <div class="grid flex-grow card bg-base-100 place-items-start p-5">
+                        <h4 class="font-bold text-primary text-sm mb-2">Foco Ágil</h4>
+                        <p class="text-xs text-slate-600">Clientes, mercado, adaptação contínua a incertezas e software funcionando.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="card bg-base-100 shadow-xl border border-base-200 overflow-hidden">
+                <div class="bg-slate-900 px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-2">
+                    <h3 class="text-white font-bold text-lg">Tradicional vs. Ágil: Mapa da Mina</h3>
+                    <div class="badge badge-outline border-slate-600 text-slate-300 text-[10px] font-bold">Quadro Comparativo</div>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="table table-zebra w-full text-xs">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-500 uppercase">
+                                <th>Critério</th>
+                                <th>Tradicional (Ex: Cascata)</th>
+                                <th class="text-primary">Metodologia Ágil</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold text-slate-700">Planejamento</td>
+                                <td>Detalha tudo no início do projeto.</td>
+                                <td class="font-medium text-primary">Plano de alto nível, detalhado iterativamente.</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-slate-700">Equipe</td>
+                                <td>Gerente no comando (top-down).</td>
+                                <td class="font-medium text-primary">Equipe auto-organizada.</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-slate-700">Tempo de Entrega</td>
+                                <td>Entrega tudo no fim (meses/anos).</td>
+                                <td class="font-medium text-primary">Entrega em iterações curtas (1 a 4 semanas).</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-slate-700">Mudanças</td>
+                                <td>Controle formal burocrático (evitadas).</td>
+                                <td class="font-medium text-primary">Enxerga mudanças como bem-vindas.</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-slate-700">Contrato / Escopo</td>
+                                <td>Escopo Fixo | Tempo e Custo Variáveis.</td>
+                                <td class="font-medium text-primary">Tempo e Custo Fixos | Escopo Variável.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-full bg-secondary text-white flex items-center justify-center shadow-lg focus-ring">
+                    <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-extrabold text-slate-800 tracking-tight">Alerta de Pegadinhas</h2>
+                    <p class="text-xs text-secondary font-semibold uppercase tracking-widest mt-1">Estudo Ativo: Clique na afirmação para ver a verdade</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                
+                <div class="collapse collapse-arrow bg-base-100 border border-alert-200 shadow-sm hover:shadow-md transition-shadow">
+                    <input type="checkbox" /> 
+                    <div class="collapse-title text-sm font-semibold text-slate-800 flex items-center gap-3 pr-10">
+                        <div class="badge badge-error badge-sm text-[9px] font-bold uppercase text-white shadow-sm flex-shrink-0">Errado</div>
+                        "Métodos ágeis não documentam o projeto."
+                    </div>
+                    <div class="collapse-content bg-alert-50"> 
+                        <div class="pt-4 mt-2 border-t border-alert-200">
+                            <span class="text-xs font-bold text-alert-700 uppercase tracking-wider block mb-1">A Verdade:</span>
+                            <p class="text-xs text-slate-700">Eles documentam o necessário e suficiente, sem burocracia excessiva.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collapse collapse-arrow bg-base-100 border border-alert-200 shadow-sm hover:shadow-md transition-shadow">
+                    <input type="checkbox" /> 
+                    <div class="collapse-title text-sm font-semibold text-slate-800 flex items-center gap-3 pr-10">
+                        <div class="badge badge-error badge-sm text-[9px] font-bold uppercase text-white shadow-sm flex-shrink-0">Errado</div>
+                        "O Ágil só serve para projetos pequenos e simples."
+                    </div>
+                    <div class="collapse-content bg-alert-50"> 
+                        <div class="pt-4 mt-2 border-t border-alert-200">
+                            <span class="text-xs font-bold text-alert-700 uppercase tracking-wider block mb-1">A Verdade:</span>
+                            <p class="text-xs text-slate-700">Embora historicamente se dissesse isso, hoje os projetos ágeis são maduros o suficiente para lidar com projetos complexos e de grande porte.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collapse collapse-arrow bg-base-100 border border-alert-200 shadow-sm hover:shadow-md transition-shadow">
+                    <input type="checkbox" /> 
+                    <div class="collapse-title text-sm font-semibold text-slate-800 flex items-center gap-3 pr-10">
+                        <div class="badge badge-error badge-sm text-[9px] font-bold uppercase text-white shadow-sm flex-shrink-0">Errado</div>
+                        "Como o escopo muda, a qualidade é deixada em 2º plano."
+                    </div>
+                    <div class="collapse-content bg-alert-50"> 
+                        <div class="pt-4 mt-2 border-t border-alert-200">
+                            <span class="text-xs font-bold text-alert-700 uppercase tracking-wider block mb-1">A Verdade:</span>
+                            <p class="text-xs text-slate-700">A atenção contínua à excelência técnica e ao bom design aumentam a agilidade. A qualidade é essencial (TDD, testes automatizados).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collapse collapse-arrow bg-base-100 border border-alert-200 shadow-sm hover:shadow-md transition-shadow">
+                    <input type="checkbox" /> 
+                    <div class="collapse-title text-sm font-semibold text-slate-800 flex items-center gap-3 pr-10">
+                        <div class="badge badge-error badge-sm text-[9px] font-bold uppercase text-white shadow-sm flex-shrink-0">Errado</div>
+                        "O Ágil dispensa o levantamento de requisitos/avaliação."
+                    </div>
+                    <div class="collapse-content bg-alert-50"> 
+                        <div class="pt-4 mt-2 border-t border-alert-200">
+                            <span class="text-xs font-bold text-alert-700 uppercase tracking-wider block mb-1">A Verdade:</span>
+                            <p class="text-xs text-slate-700">O que muda não é a exclusão da etapa, mas a forma de fazê-la (de maneira contínua, iterativa e altamente próxima ao cliente).</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="alert bg-slate-900 border border-yellow-500/30 text-slate-300 shadow-xl mt-10 rounded-2xl flex-col items-start md:flex-row md:items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-warning shrink-0 w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <div class="flex-1">
+                    <h3 class="font-bold text-warning uppercase text-sm mb-1 tracking-widest">Dica do Especialista</h3>
+                    <p class="text-sm leading-relaxed">
+                        Nas bancas <strong>CESPE/CEBRASPE</strong> e <strong>FGV</strong>, palavras como <em>"engessamento", "documentação exaustiva" ou "proibição de mudanças"</em> indicam assertiva <span class="badge badge-error badge-sm font-bold text-white ml-1">ERRADA</span>. Palavras como <em>"adaptação", "foco no cliente" e "entrega de valor"</em> indicam assertiva <span class="badge badge-accent badge-sm font-bold text-white ml-1">CORRETA</span>.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="footer footer-center p-10 bg-base-200 text-base-content rounded mt-10">
+        <aside>
+            <p class="font-bold uppercase tracking-widest text-[10px] text-slate-400">Material de Apoio Estratégico • Concursos TI</p>
+        </aside>
+    </footer>
+
+</body>
+</html>

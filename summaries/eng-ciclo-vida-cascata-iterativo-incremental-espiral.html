@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumo Estratégico: Processos de Software - CP-T Marinha</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        navy: { 50: '#f0f4f8', 100: '#d9e2ec', 500: '#334e68', 700: '#243b53', 900: '#102a43' },
+                        focus: { 50: '#f0fdfa', 100: '#ccfbf1', 500: '#14b8a6', 700: '#0f766e', 900: '#134e4a' },
+                        alert: { 50: '#fff1f2', 100: '#ffe4e6', 500: '#f43f5e', 700: '#be123c', 900: '#881337' },
+                        gold: { 500: '#eab308', 700: '#a16207' }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased leading-relaxed font-sans pb-10">
+
+    <header class="navbar bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm bg-opacity-95 backdrop-blur-md px-6">
+        <div class="flex-1 gap-4">
+            <div class="avatar placeholder">
+                <div class="bg-navy-900 text-white rounded-xl w-12 shadow-lg border-b-4 border-gold-500 flex items-center justify-center">
+                    <span class="text-xl font-extrabold">MB</span>
+                </div>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold text-slate-900 leading-tight">Engenharia de Software</h1>
+                <p class="text-xs text-slate-500 font-medium tracking-wide uppercase">Foco Bibliográfico: Pressman & Sommerville</p>
+            </div>
+        </div>
+        <div class="flex-none hidden md:flex gap-2">
+            <div class="badge badge-ghost font-bold uppercase py-3 border-slate-300 text-[10px]">Modelos de Processo</div>
+            <div class="badge font-bold uppercase py-3 border-alert-200 text-[10px] text-alert-700 bg-alert-50">Alto Nível (CP-T)</div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-10 space-y-20">
+
+        <section class="text-center max-w-4xl mx-auto">
+            <div class="badge bg-gold-500 text-white border-none mb-4 font-bold tracking-widest uppercase p-4 shadow-sm text-xs">Resumo Esquematizado</div>
+            <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight">Metodologias e Processos de Desenvolvimento</h2>
+            <div class="text-slate-600 text-base leading-relaxed">
+                <p>Material estruturado estrategicamente para candidatos a concursos de alto nível, focando nos autores consagrados e nas "pegadinhas" tradicionais das bancas.</p>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex items-center gap-4 mb-8">
+                <div class="flex items-center justify-center bg-navy-900 text-white rounded-lg w-10 h-10 font-bold text-lg shadow-lg">1</div>
+                <h2 class="text-2xl font-bold text-slate-800">Conceitos Iniciais e Visão Geral</h2>
+            </div>
+            
+            <p class="text-sm text-slate-700 mb-8 border-l-4 border-navy-500 pl-4 py-3 bg-white shadow-sm rounded-r-lg">
+                A <strong>Engenharia de Software</strong> visa aplicar uma abordagem sistemática, disciplinada e quantificável ao desenvolvimento, operação e manutenção de software. Um <strong>Processo de Software</strong> é um conjunto de atividades e resultados que produz um produto de software.
+            </p>
+
+            <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Divergência de Autores (Essencial para Prova)</h3>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                
+                <div class="bg-white rounded-2xl shadow-md border-t-4 border-t-focus-500 p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <h4 class="font-bold text-focus-700 text-lg">Visão de Ian Sommerville</h4>
+                        <span class="badge badge-error text-white font-bold text-[10px] uppercase">Muito Cobrada</span>
+                    </div>
+                    <p class="text-xs text-slate-600 mb-6 border-b border-slate-100 pb-2">Afirma que todo processo de software deve incluir obrigatoriamente <strong>4 atividades fundamentais</strong>:</p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-focus-50 border border-focus-100 p-4 rounded-xl">
+                            <span class="text-focus-500 font-extrabold text-lg block mb-1">01</span>
+                            <h5 class="font-bold text-slate-800 text-sm">Especificação</h5>
+                            <p class="text-xs text-slate-600 mt-1">Definir o que o sistema deve fazer e suas restrições.</p>
+                        </div>
+                        <div class="bg-focus-50 border border-focus-100 p-4 rounded-xl">
+                            <span class="text-focus-500 font-extrabold text-lg block mb-1">02</span>
+                            <h5 class="font-bold text-slate-800 text-sm">Desenvolvimento</h5>
+                            <p class="text-xs text-slate-600 mt-1">O projeto e a implementação de como o sistema será feito.</p>
+                        </div>
+                        <div class="bg-focus-50 border border-focus-100 p-4 rounded-xl">
+                            <span class="text-focus-500 font-extrabold text-lg block mb-1">03</span>
+                            <h5 class="font-bold text-slate-800 text-sm">Validação</h5>
+                            <p class="text-xs text-slate-600 mt-1">Verificar se o software atende às demandas do cliente (Testes).</p>
+                        </div>
+                        <div class="bg-focus-50 border border-focus-100 p-4 rounded-xl">
+                            <span class="text-focus-500 font-extrabold text-lg block mb-1">04</span>
+                            <h5 class="font-bold text-slate-800 text-sm">Evolução</h5>
+                            <p class="text-xs text-slate-600 mt-1">Manutenção e adaptações às mudanças do cliente/mercado.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-md border-t-4 border-t-navy-500 p-6">
+                    <h4 class="font-bold text-navy-700 text-lg mb-4">Visão de Roger Pressman</h4>
+                    <p class="text-xs text-slate-600 mb-6 border-b border-slate-100 pb-2">O autor descreve um modelo de fluxo genérico que possui <strong>5 atividades estruturais</strong> sequenciais:</p>
+                    
+                    <div class="flex flex-col gap-3">
+                        <div class="flex items-center gap-4 bg-slate-50 border border-slate-200 p-3 rounded-lg">
+                            <div class="bg-navy-100 text-navy-700 font-bold rounded p-2 text-xs">1</div>
+                            <div>
+                                <h5 class="font-bold text-slate-800 text-sm">Comunicação</h5>
+                                <p class="text-xs text-slate-500">Levantamento de requisitos com o cliente.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 bg-slate-50 border border-slate-200 p-3 rounded-lg">
+                            <div class="bg-navy-100 text-navy-700 font-bold rounded p-2 text-xs">2</div>
+                            <div>
+                                <h5 class="font-bold text-slate-800 text-sm">Planejamento</h5>
+                                <p class="text-xs text-slate-500">Estimativas, cronogramas e riscos.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 bg-slate-50 border border-slate-200 p-3 rounded-lg">
+                            <div class="bg-navy-100 text-navy-700 font-bold rounded p-2 text-xs">3</div>
+                            <div>
+                                <h5 class="font-bold text-slate-800 text-sm">Modelagem</h5>
+                                <p class="text-xs text-slate-500">Criação de modelos (análise e projeto da arquitetura).</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 bg-slate-50 border border-slate-200 p-3 rounded-lg">
+                            <div class="bg-navy-100 text-navy-700 font-bold rounded p-2 text-xs">4</div>
+                            <div>
+                                <h5 class="font-bold text-slate-800 text-sm">Construção</h5>
+                                <p class="text-xs text-slate-500">Codificação propriamente dita e testes.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 bg-slate-50 border border-slate-200 p-3 rounded-lg">
+                            <div class="bg-navy-100 text-navy-700 font-bold rounded p-2 text-xs">5</div>
+                            <div>
+                                <h5 class="font-bold text-slate-800 text-sm">Implantação</h5>
+                                <p class="text-xs text-slate-500">Entrega do software e feedback do usuário (Evolução).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex items-center gap-4 mb-6">
+                <div class="flex items-center justify-center bg-slate-800 text-white rounded-lg w-10 h-10 font-bold text-lg shadow-lg">2</div>
+                <h2 class="text-2xl font-bold text-slate-800">Modelos Sequenciais (Dirigidos a Planos)</h2>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm relative overflow-hidden">
+                <div class="absolute top-0 right-0 bg-slate-100 text-slate-400 font-bold text-[10px] uppercase px-4 py-2 rounded-bl-xl border-l border-b border-slate-200">Waterfall</div>
+                
+                <h3 class="text-xl font-extrabold text-navy-900 mb-2">Modelo em Cascata (Clássico / Sequencial Linear)</h3>
+                <p class="text-sm text-slate-600 mb-6 pb-6 border-b border-slate-100">É o pioneiro. Sua regra de ouro é que uma fase só se inicia após o término e aprovação (documentação) da fase anterior.</p>
+
+                <div class="grid md:grid-cols-2 gap-8 mb-8">
+                    <div class="space-y-4">
+                        <div class="flex gap-3">
+                            <div class="text-focus-500 font-bold text-xl shrink-0 mt-1">📌</div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-sm">Características & Uso</h4>
+                                <p class="text-xs text-slate-600 mt-1">Rígido, sequencial, com forte ênfase em documentação. Usado <strong>apenas</strong> quando os requisitos são bem compreendidos, fixos e improváveis de sofrerem mudanças radicais.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-3">
+                            <div class="text-green-500 font-bold text-xl shrink-0 mt-1">✅</div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-sm">Vantagens</h4>
+                                <p class="text-xs text-slate-600 mt-1">Simples de entender e gerenciar. Define pontos específicos de entrega. Funciona bem com equipes tecnicamente mais fracas.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex gap-3">
+                            <div class="text-alert-500 font-bold text-xl shrink-0 mt-1">⚠️</div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-sm">Desvantagens</h4>
+                                <p class="text-xs text-slate-600 mt-1">Divisão inflexível. O cliente só vê o software funcionando no final do projeto (gera ansiedade). Atraso na descoberta de riscos (geralmente só na fase de testes).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-alert-50 border-l-4 border-alert-500 p-4 rounded-r-xl flex items-start gap-4">
+                    <div class="text-alert-500 font-bold text-2xl shrink-0">🚨</div>
+                    <div>
+                        <h4 class="font-bold text-sm text-alert-900">Pegadinha de Prova (O Mito do Cascata)</h4>
+                        <p class="text-xs text-alert-800 mt-1">Apesar de ser teoricamente estritamente linear, na prática e nas literaturas modernas, <strong>ele admite feedback (retorno) de uma fase para a imediatamente anterior</strong> para correção de erros e documentos detectados na transição. Cuidado com bancas que dizem que é "impossível" voltar.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex items-center gap-4 mb-6">
+                <div class="flex items-center justify-center bg-slate-800 text-white rounded-lg w-10 h-10 font-bold text-lg shadow-lg">3</div>
+                <h2 class="text-2xl font-bold text-slate-800">Modelos Iterativos e Incrementais</h2>
+            </div>
+            <p class="text-sm text-slate-600 mb-6">A maioria dos softwares modernos evolui com o tempo. A abordagem iterativa e incremental surge para reagir facilmente a mudanças. Na prática (e em provas), eles andam juntos.</p>
+
+            <div class="grid lg:grid-cols-2 gap-6 items-stretch">
+                <div class="bg-white rounded-2xl shadow-md border border-slate-200 p-6">
+                    <h4 class="text-sm font-bold text-navy-800 mb-4 uppercase tracking-widest border-b border-slate-100 pb-2">Conceito Chave</h4>
+                    <ul class="space-y-4">
+                        <li class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                            <strong class="text-focus-600 text-sm block mb-1">Modelo Iterativo:</strong>
+                            <p class="text-xs text-slate-600">Significa passar pelas fases várias vezes, <em>refinando e melhorando a qualidade</em> do produto a cada ciclo.</p>
+                        </li>
+                        <li class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                            <strong class="text-focus-600 text-sm block mb-1">Modelo Incremental:</strong>
+                            <p class="text-xs text-slate-600">Significa entregar o software em "pedaços" (incrementos) operacionais. O primeiro incremento geralmente atende aos requisitos essenciais (core).</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-gradient-to-br from-navy-900 to-navy-700 text-white rounded-2xl shadow-xl p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-2xl font-extrabold text-gold-500">RAD</h3>
+                        <div class="bg-transparent border border-gold-500 text-gold-500 rounded px-2 py-1 text-[10px] font-bold">Rapid App Dev</div>
+                    </div>
+                    <p class="text-xs text-slate-300 mb-6">Modelo iterativo e incremental que enfatiza um ciclo de desenvolvimento extremamente curto.</p>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 bg-navy-800/60 p-3 rounded-lg">
+                            <span class="text-gold-500 text-lg shrink-0">⏱️</span>
+                            <p class="text-xs"><strong class="text-white">Prazo de Ouro:</strong> Ciclos rápidos de 60 a 90 dias.</p>
+                        </div>
+                        <div class="flex items-center gap-3 bg-navy-800/60 p-3 rounded-lg">
+                            <span class="text-gold-500 text-lg shrink-0">🧩</span>
+                            <p class="text-xs"><strong class="text-white">Estratégia:</strong> Alta velocidade alcançada através do uso exaustivo do <strong>reúso de componentes</strong>.</p>
+                        </div>
+                        <div class="flex items-center gap-3 bg-navy-800/60 p-3 rounded-lg">
+                            <span class="text-gold-500 text-lg shrink-0">⚡</span>
+                            <p class="text-xs"><strong class="text-white">Fases condensadas:</strong> Foca pesadamente em Modelagem e Construção.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex items-center gap-4 mb-6">
+                <div class="flex items-center justify-center bg-slate-800 text-white rounded-lg w-10 h-10 font-bold text-lg shadow-lg">4</div>
+                <h2 class="text-2xl font-bold text-slate-800">Modelos Evolucionários (Evolutivos)</h2>
+            </div>
+            
+            <div class="space-y-6">
+                <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
+                    <h3 class="text-lg font-bold text-navy-800 mb-2">Prototipação (Prototyping)</h3>
+                    <p class="text-xs text-slate-600 mb-4">Usado quando os <strong>requisitos estão obscuros</strong> ou o cliente não sabe bem o que quer. É um processo rápido para criar um modelo visual interativo.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                            <h4 class="font-bold text-xs text-slate-800 uppercase mb-2">Tipos</h4>
+                            <ul class="text-xs text-slate-600 space-y-2 list-disc pl-4">
+                                <li><strong>Throw-away (Descartável):</strong> Valida requisitos e é jogado fora.</li>
+                                <li><strong>Evolucionária:</strong> O protótipo é refinado até virar o sistema final.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-alert-50 p-4 rounded-xl border border-alert-100">
+                            <h4 class="font-bold text-xs text-alert-800 uppercase mb-2">Ponto Fraco (Provas)</h4>
+                            <p class="text-xs text-slate-700">Gera códigos mal estruturados (pois o foco inicial é mostrar a interface rápida, ignorando a arquitetura) e negligencia documentação formal.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white border-l-4 border-l-gold-500 border border-slate-200 p-6 rounded-2xl shadow-md">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-extrabold text-navy-900">Modelo em Espiral (Boehm)</h3>
+                        <div class="bg-gold-500 text-white font-bold rounded px-3 py-1 text-[10px] uppercase shadow-sm">Análise de Riscos</div>
+                    </div>
+                    <p class="text-sm text-slate-600 mb-4">Combina a natureza iterativa da prototipação com o controle do modelo em cascata. O foco explícito e contínuo é na **identificação e redução de riscos** (Se a banca falar em "risco", marque Espiral).</p>
+                    
+                    <h4 class="font-bold text-xs text-slate-400 uppercase tracking-widest mb-3">Setores (Voltas da Espiral)</h4>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <div class="bg-slate-50 border border-slate-200 p-3 rounded-lg text-center">
+                            <span class="text-navy-300 font-bold block mb-1">1</span>
+                            <span class="text-[10px] font-bold text-slate-700 block uppercase">Determinar</span>
+                            <span class="text-[9px] text-slate-500">Objetivos e restrições</span>
+                        </div>
+                        <div class="bg-gold-50 border border-gold-200 p-3 rounded-lg text-center shadow-sm">
+                            <span class="text-gold-500 font-bold block mb-1">2</span>
+                            <span class="text-[10px] font-bold text-gold-800 block uppercase">Riscos</span>
+                            <span class="text-[9px] text-gold-700">Avaliar e resolver</span>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 p-3 rounded-lg text-center">
+                            <span class="text-navy-300 font-bold block mb-1">3</span>
+                            <span class="text-[10px] font-bold text-slate-700 block uppercase">Engenharia</span>
+                            <span class="text-[9px] text-slate-500">Desenvolver e testar</span>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 p-3 rounded-lg text-center">
+                            <span class="text-navy-300 font-bold block mb-1">4</span>
+                            <span class="text-[10px] font-bold text-slate-700 block uppercase">Planejar</span>
+                            <span class="text-[9px] text-slate-500">A próxima iteração</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="bg-navy-900 rounded-3xl p-8 shadow-2xl text-white">
+                
+                <h2 class="text-3xl font-extrabold tracking-tight mb-2 text-gold-500">Dicas Estratégicas: Active Recall</h2>
+                <p class="text-sm text-navy-100 mb-8 max-w-2xl">Bancas militares testam sua capacidade de associar palavras-chave. Leia a descrição abaixo, tente lembrar o modelo correspondente, e <strong>clique para expandir e ver a justificativa.</strong></p>
+
+                <div class="space-y-4">
+                    
+                    <div class="collapse collapse-plus bg-navy-800 border border-navy-700 rounded-xl">
+                        <input type="checkbox" /> 
+                        <div class="collapse-title text-sm font-medium text-white flex items-center gap-3">
+                            <span class="bg-navy-700 text-gold-500 px-2 py-1 rounded text-xs font-bold">Q1</span>
+                            "Modelo sequencial, muito rígido, exige documentação farta e requisitos altamente estáveis desde o início."
+                        </div>
+                        <div class="collapse-content bg-navy-950 pt-4"> 
+                            <p class="text-sm text-white mb-2"><strong class="text-green-400">Resposta: Modelo em Cascata (Waterfall).</strong></p>
+                            <p class="text-xs text-navy-200 leading-relaxed"><strong>Justificativa:</strong> A banca usa essas palavras para descrever a inflexibilidade do modelo clássico. A obrigatoriedade de ter requisitos imutáveis e muita documentação antes de avançar para o código é a marca registrada do Cascata.</p>
+                        </div>
+                    </div>
+
+                    <div class="collapse collapse-plus bg-navy-800 border border-navy-700 rounded-xl">
+                        <input type="checkbox" /> 
+                        <div class="collapse-title text-sm font-medium text-white flex items-center gap-3">
+                            <span class="bg-navy-700 text-gold-500 px-2 py-1 rounded text-xs font-bold">Q2</span>
+                            "Modelo que enfatiza a entrega do software em pedaços operacionais contínuos. A primeira entrega foca no núcleo do sistema."
+                        </div>
+                        <div class="collapse-content bg-navy-950 pt-4"> 
+                            <p class="text-sm text-white mb-2"><strong class="text-green-400">Resposta: Modelo Incremental.</strong></p>
+                            <p class="text-xs text-navy-200 leading-relaxed"><strong>Justificativa:</strong> Sempre que a banca falar de "entregas parciais", "pedaços funcionais" ou "primeiro incremento sendo o núcleo (core)", ela está diferenciando o Incremental dos modelos que entregam tudo só no final.</p>
+                        </div>
+                    </div>
+
+                    <div class="collapse collapse-plus bg-navy-800 border border-navy-700 rounded-xl">
+                        <input type="checkbox" /> 
+                        <div class="collapse-title text-sm font-medium text-white flex items-center gap-3">
+                            <span class="bg-navy-700 text-gold-500 px-2 py-1 rounded text-xs font-bold">Q3</span>
+                            "Avaliação rigorosa de alternativas e foco absoluto em identificar, gerenciar e mitigar riscos a cada ciclo."
+                        </div>
+                        <div class="collapse-content bg-navy-950 pt-4"> 
+                            <p class="text-sm text-white mb-2"><strong class="text-green-400">Resposta: Modelo em Espiral.</strong></p>
+                            <p class="text-xs text-navy-200 leading-relaxed"><strong>Justificativa:</strong> A palavra "Risco" é o cordão umbilical do Modelo em Espiral de Barry Boehm. Nenhum outro modelo clássico embute uma fase inteira exclusivamente para tratar incertezas antes de codificar.</p>
+                        </div>
+                    </div>
+
+                    <div class="collapse collapse-plus bg-navy-800 border border-navy-700 rounded-xl">
+                        <input type="checkbox" /> 
+                        <div class="collapse-title text-sm font-medium text-white flex items-center gap-3">
+                            <span class="bg-navy-700 text-gold-500 px-2 py-1 rounded text-xs font-bold">Q4</span>
+                            "O cliente não tem certeza dos requisitos. A equipe constrói rapidamente uma interface executável para validar a ideia e jogá-la fora."
+                        </div>
+                        <div class="collapse-content bg-navy-950 pt-4"> 
+                            <p class="text-sm text-white mb-2"><strong class="text-green-400">Resposta: Prototipação (Throw-away).</strong></p>
+                            <p class="text-xs text-navy-200 leading-relaxed"><strong>Justificativa:</strong> "Requisitos obscuros" e "construção rápida para validação do usuário" definem a prototipação. O termo "jogar fora" refere-se ao tipo descartável, que serve apenas de espelho para extrair os verdadeiros requisitos.</p>
+                        </div>
+                    </div>
+
+                    <div class="collapse collapse-plus bg-navy-800 border border-navy-700 rounded-xl">
+                        <input type="checkbox" /> 
+                        <div class="collapse-title text-sm font-medium text-white flex items-center gap-3">
+                            <span class="bg-navy-700 text-gold-500 px-2 py-1 rounded text-xs font-bold">Q5</span>
+                            "Desenvolvimento de alta velocidade com ciclos muito curtos (60-90 dias), baseando-se quase inteiramente na montagem de componentes que já existem."
+                        </div>
+                        <div class="collapse-content bg-navy-950 pt-4"> 
+                            <p class="text-sm text-white mb-2"><strong class="text-green-400">Resposta: RAD (Rapid Application Development).</strong></p>
+                            <p class="text-xs text-navy-200 leading-relaxed"><strong>Justificativa:</strong> O prazo específico de 60 a 90 dias, somado à palavra "velocidade" e ao "reúso de componentes", são os gatilhos infalíveis para gabaritar questões sobre o modelo RAD em provas do CESPE e Marinha.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="text-center py-8 border-t border-slate-200 mt-10">
+        <p class="text-slate-400 text-[10px] uppercase tracking-widest font-bold">Resumo Estratégico • Marinha do Brasil (CP-T)</p>
+    </footer>
+
+</body>
+</html>

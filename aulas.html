@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Aulas - CP-T 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        body { 
+            background-color: #f8fafc; 
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .class-card { 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+            cursor: pointer;
+        }
+        
+        .class-card:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .completed-card {
+            background-color: #ecfdf5 !important; 
+            border-color: #6ee7b7 !important;     
+        }
+        
+        .completed-card .class-title {
+            color: #065f46; 
+            text-decoration: line-through; 
+            opacity: 0.8;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 100% 0; }
+            100% { background-position: -100% 0; }
+        }
+        .progress-gradient {
+            background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 50%, #1e3a8a 100%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite linear;
+        }
+    </style>
+</head>
+<body class="text-slate-800 pb-20">
+    
+ <nav class="bg-blue-900 text-white p-4 shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            
+            <div class="flex items-center gap-3">
+                <i class="fas fa-anchor text-2xl text-yellow-400"></i>
+                <div>
+                    <h1 class="text-xl font-bold leading-none">CP-T 2026</h1>
+                    <span class="text-xs text-blue-200 opacity-80">Engenharia de Dados & TI</span>
+                </div>
+            </div>
+
+            <div class="flex bg-blue-800 rounded-lg p-1">
+                <a href="index.html" class="px-4 py-1.5 rounded-md text-sm font-medium transition hover:bg-blue-700 hover:text-white text-blue-100">
+                    <i class="fas fa-list-alt mr-2"></i>Edital
+                </a>
+                
+                <a href="controle.html" class="px-4 py-1.5 rounded-md text-sm font-medium transition hover:bg-blue-700 hover:text-white text-blue-100">
+                    <i class="fas fa-chart-line mr-2"></i>Controle & Ciclo
+                </a>
+                
+                <a href="cronograma.html" class="px-4 py-1.5 rounded-md text-sm font-medium transition hover:bg-blue-700 hover:text-white text-blue-100">
+                    <i class="fas fa-calendar-alt mr-2"></i>Cronograma
+                </a>
+
+                <a href="aulas.html" class="px-4 py-1.5 rounded-md text-sm font-medium bg-blue-700 text-white shadow-sm">
+                    <i class="fas fa-book mr-2"></i>Aulas
+                </a>
+                <a href="painel_tatico.html" class="px-4 py-1.5 rounded-md text-sm font-medium transition hover:bg-blue-700 hover:text-white text-blue-100">
+                    <i class="fas fa-heartbeat mr-2"></i>TAF & Saúde
+                </a>
+            </div>
+
+            <div class="flex gap-4 text-sm">
+                <button onclick="exportData()" class="hover:text-yellow-400 transition" title="Baixar Backup"><i class="fas fa-download"></i></button>
+                <label class="cursor-pointer hover:text-yellow-400 transition" title="Restaurar Backup">
+                    <i class="fas fa-upload"></i>
+                    <input type="file" id="importFile" class="hidden" onchange="importData(this)">
+                </label>
+                <button onclick="resetData()" class="text-red-300 hover:text-red-100 transition" title="Apagar Tudo"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto p-4 md:p-6">
+
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-8 border border-slate-200 flex flex-col md:flex-row justify-between items-center gap-6 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-blue-500 to-blue-700"></div>
+            <div class="flex-1 w-full pl-4">
+                <div class="flex justify-between items-end mb-2">
+                    <div>
+                        <h2 class="font-bold text-slate-700 text-lg">Progresso Global do Curso</h2>
+                        <p class="text-xs text-slate-500" id="master-stats">0 de X aulas concluídas</p>
+                    </div>
+                    <span class="text-3xl font-black text-blue-900" id="master-percent">0%</span>
+                </div>
+                <div class="w-full bg-slate-100 h-4 rounded-full overflow-hidden shadow-inner border border-slate-200">
+                    <div id="master-bar" class="progress-gradient h-4 rounded-full transition-all duration-700 shadow-lg" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="subjects-container" class="space-y-8">
+            </div>
+
+    </main>
+
+    <script>
+        const STORAGE_KEY = 'cpt2026_material_tracker';
+
+        // Estrutura exata do seu diretório de arquivos
+        const COURSE_DATA = [
+            {
+                id: "eng",
+                title: "Engenharia de Software",
+                color: "blue",
+                icon: "fa-project-diagram",
+                classes: [
+                    "Aula 00 - Metodologias de Desenvolvimento",
+                    "Aula 01 - Metodologias de Desenvolvimento I",
+                    "Aula 02 - Metodologias Ágeis",
+                    "Aula 03 - SCRUM",
+                    "Aula 04 - Engenharia de Requisitos",
+                    "Aula 05 - Análise de Projetos Orientada a Objetos (APOO)",
+                    "Aula 06 - UML",
+                    "Aula 07 - Qualidade de Software",
+                    "Aula 08 - Teste de Software",
+                    "Aula 09 - Arquitetura Orientada a Serviço (SOA)",
+                    "Aula 10 - Padrões de Projeto"
+                ]
+            },
+            {
+                id: "dev",
+                title: "Desenvolvimento de Software",
+                color: "orange",
+                icon: "fa-code",
+                classes: [
+                    "Aula 00 - Métodos de Ordenação",
+                    "Aula 01 - Estruturas de Dados",
+                    "Aula 02 - Estruturas de Dados II",
+                    "Aula 03 - JAVA",
+                    "Aula 04 - Python",
+                    "Aula 05 - XML",
+                    "Aula 06 - JSON"
+                ]
+            },
+            {
+                id: "gov",
+                title: "Governança de TI",
+                color: "purple",
+                icon: "fa-chess-knight",
+                classes: [
+                    "Aula 00 - PMBOK 7",
+                    "Aula 01 - PETI",
+                    "Aula 02 - COBIT 2019",
+                    "Aula 03 - ITIL 4",
+                    "Aula 04 - CMMI 3"
+                ]
+            },
+            {
+                id: "redes",
+                title: "Redes e Segurança",
+                color: "emerald",
+                icon: "fa-network-wired",
+                classes: [
+                    "Aula 00 - Tipos de Redes, Topologias Físicas e Classificação",
+                    "Aula 01 - Transmissão, Meios, Cabos UTP, Cabeamento",
+                    "Aula 02 - Equipamentos de Rede, Modelo OSI, TCPIP",
+                    "Aula 03 - Ethernet, ATM, Outros Protocolos, Acesso",
+                    "Aula 04 - STP, RSTP, VLANs, Redes sem fio, Segurança Wi-Fi",
+                    "Aula 05 - Protocolo IPv4 e Fragmentação",
+                    "Aula 06 - NAT, PAT, IPv6, IoT, ARP, ICMP, IGMP",
+                    "Aula 07 - MPLS, Camada de Transporte, TCP, UDP, SCTP",
+                    "Aula 08 - HTTP, Protocolos de Correio Eletrônico",
+                    "Aula 09 - DNS, DHCP, FTP, NTP, TELNET, SSH, RDP",
+                    "Aula 10 - Gerenciamento de Rede",
+                    "Aula 11 - Segurança, Autenticação, IAM, SAST, DAST",
+                    "Aula 12 - Firewall, Proxy, IDS/IPS, Zero Trust, SIEM",
+                    "Aula 13 - SSL, TLS, IPSEC, TOR, DeepWeb, VPN",
+                    "Aula 14 - Ataques, Malwares, Camada de Aplicação, OWASP",
+                    "Aula 15 - Criptografia Simétrica, Assimétrica, Hash",
+                    "Aula 16 - Assinatura Digital, Certificação, ICP",
+                    "Aula 17 - Cluster, Grid, Balanceamento, Nuvem, Contêineres"
+                ]
+            },
+            {
+                id: "bd",
+                title: "Banco de Dados & IA",
+                color: "teal",
+                icon: "fa-database",
+                classes: [
+                    "Aula 00 - Dados, Banco de Dados, SGBDs",
+                    "Aula 01 - Modelo Relacional, Conceitual, Normalização",
+                    "Aula 02 - SQL",
+                    "Aula 03 - Administração de BD e Bancos Distribuídos",
+                    "Aula 04 - BI, ETL, Vector Storages, Armazenamento",
+                    "Aula 05 - Modelagem Dimensional e OLAP",
+                    "Aula 06 - Data Mining, Big Data, TDSP",
+                    "Aula 07 - NoSQL",
+                    "Aula 08 - IA, PLN, IA Generativa, Multimodais",
+                    "Aula 09 - Machine Learning",
+                    "Aula 10 - Redes Neurais, Deep Learning, LSTM",
+                    "Aula 11 - PLN",
+                    "Aula 12 - Otimização de Modelos, Regularização",
+                    "Aula 13 - Limpeza de Dados, Redução de Dimensionalidade",
+                    "Aula 14 - Dama DMBOK"
+                ]
+            },
+            {
+                id: "arq",
+                title: "Arquitetura e SO",
+                color: "slate",
+                icon: "fa-microchip",
+                classes: [
+                    "Aula 00 - RISC, CISC, Hardware x Software. Compiladores",
+                    "Aula 01 - CPU, Multiprocessamento, Memória",
+                    "Aula 02 - Sistemas de Numeração, Álgebra Booleana, Lógica",
+                    "Aula 03 - Sistemas Operacionais, Gerência de Processos, Memória",
+                    "Aula 04 - Linux"
+                ]
+            }
+        ];
+
+        let userProgress = {};
+
+        function init() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                userProgress = JSON.parse(stored);
+            } else {
+                // Inicializa progresso vazio
+                COURSE_DATA.forEach(sub => {
+                    userProgress[sub.id] = new Array(sub.classes.length).fill(false);
+                });
+                save();
+            }
+            renderSubjects();
+            updateMasterProgress();
+        }
+
+        function toggleClass(subId, classIndex) {
+            userProgress[subId][classIndex] = !userProgress[subId][classIndex];
+            save();
+            renderSubjects(); // Re-renderiza para atualizar visual
+            updateMasterProgress();
+        }
+
+        function renderSubjects() {
+            const container = document.getElementById('subjects-container');
+            container.innerHTML = '';
+
+            COURSE_DATA.forEach(subject => {
+                const total = subject.classes.length;
+                const completed = userProgress[subject.id].filter(Boolean).length;
+                const percent = Math.round((completed / total) * 100) || 0;
+
+                // Cores Tailwind dinâmicas
+                const bgHeader = `bg-${subject.color}-50`;
+                const textHeader = `text-${subject.color}-800`;
+                const borderHeader = `border-${subject.color}-200`;
+                const barColor = `bg-${subject.color}-500`;
+
+                let html = `
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="${bgHeader} border-b ${borderHeader} p-4 flex flex-col md:flex-row justify-between md:items-center gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg ${barColor} text-white flex items-center justify-center shadow-sm">
+                                <i class="fas ${subject.icon}"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold ${textHeader} text-lg leading-tight">${subject.title}</h3>
+                                <p class="text-xs text-slate-500">${completed} de ${total} aulas concluídas</p>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-64 flex items-center gap-3">
+                            <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                                <div class="${barColor} h-2 rounded-full transition-all duration-500" style="width: ${percent}%"></div>
+                            </div>
+                            <span class="text-sm font-bold ${textHeader} min-w-[3ch] text-right">${percent}%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                `;
+
+                subject.classes.forEach((className, index) => {
+                    const isDone = userProgress[subject.id][index];
+                    const cardClass = isDone 
+                        ? "class-card completed-card border border-green-200 rounded-lg p-3 flex gap-3 items-start" 
+                        : "class-card bg-slate-50 border border-slate-200 hover:border-blue-300 rounded-lg p-3 flex gap-3 items-start";
+                    
+                    const iconHtml = isDone
+                        ? '<i class="fas fa-check-circle text-green-500 mt-0.5 text-lg"></i>'
+                        : '<i class="far fa-circle text-slate-300 mt-0.5 text-lg group-hover:text-blue-400"></i>';
+
+                    // Separa "Aula XX" do "Título"
+                    const splitIdx = className.indexOf(' - ');
+                    const aulaNum = splitIdx !== -1 ? className.substring(0, splitIdx) : `Aula ${index}`;
+                    const aulaTitle = splitIdx !== -1 ? className.substring(splitIdx + 3) : className;
+
+                    html += `
+                        <div class="${cardClass} group" onclick="toggleClass('${subject.id}', ${index})" title="${className}">
+                            <div class="flex-shrink-0">${iconHtml}</div>
+                            <div class="flex-1 min-w-0">
+                                <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">${aulaNum}</div>
+                                <div class="text-xs font-semibold class-title line-clamp-2 leading-snug ${isDone ? '' : 'text-slate-700'}">${aulaTitle}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `
+                    </div>
+                </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        function updateMasterProgress() {
+            let totalClasses = 0;
+            let completedClasses = 0;
+
+            for (const subId in userProgress) {
+                totalClasses += userProgress[subId].length;
+                completedClasses += userProgress[subId].filter(Boolean).length;
+            }
+
+            const percent = Math.round((completedClasses / totalClasses) * 100) || 0;
+
+            document.getElementById('master-percent').innerText = `${percent}%`;
+            document.getElementById('master-stats').innerText = `${completedClasses} de ${totalClasses} aulas concluídas`;
+            
+            const bar = document.getElementById('master-bar');
+            bar.style.width = `${percent}%`;
+
+            if (percent === 100) {
+                bar.classList.remove('progress-gradient');
+                bar.classList.add('bg-green-500');
+            } else {
+                bar.classList.add('progress-gradient');
+                bar.classList.remove('bg-green-500');
+            }
+        }
+
+        function save() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(userProgress));
+        }
+
+        function resetProgress() {
+            if(confirm("Tem certeza que deseja apagar todo o controle de material?")) {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            }
+        }
+
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(userProgress));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "backup_aulas_cpt2026.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
+        function importData(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if(parsed) {
+                        userProgress = parsed;
+                        save(); 
+                        init(); // re-init to render
+                        alert("Controle de aulas restaurado com sucesso!");
+                    }
+                } catch (err) { 
+                    alert("Erro ao ler arquivo de backup."); 
+                }
+                input.value = "";
+            };
+            reader.readAsText(file);
+        }
+
+        init();
+    </script>
+</body>
+</html>

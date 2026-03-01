@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronograma CP-T 2026 - Reta Final</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        body { 
+            background-color: #f8fafc; 
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .card-day { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-day:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+
+        .current-day-marker { 
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); 
+            border-color: #3b82f6 !important;
+            z-index: 10;
+        }
+
+        .completed-card {
+            background-color: #f0fdf4 !important;
+            border-color: #a7f3d0 !important;
+        }
+        .completed-card h4 {
+            color: #065f46; 
+            text-decoration: line-through; 
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body class="text-slate-800 pb-20">
+
+    <div class="navbar bg-blue-900 text-white sticky top-0 z-50 shadow-lg px-4 md:px-8 border-b border-blue-800">
+        <div class="navbar-start">
+            <div class="flex items-center gap-3">
+                <i class="fas fa-anchor text-2xl text-yellow-400"></i>
+                <div>
+                    <h1 class="text-xl font-bold leading-none">CP-T 2026</h1>
+                    <span class="text-[10px] text-blue-200 uppercase tracking-widest font-semibold">Cronograma Reta Final</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1 gap-1">
+                <li><a href="index.html" class="hover:bg-blue-800 text-blue-100"><i class="fas fa-list-alt"></i> Edital</a></li>
+                <li><a href="controle.html" class="hover:bg-blue-800 text-blue-100"><i class="fas fa-chart-line"></i> Controle & Ciclo</a></li>
+                <li><a href="cronograma.html" class="bg-blue-700 text-white font-bold"><i class="fas fa-calendar-alt"></i> Cronograma</a></li>
+                <li><a href="aulas.html" class="hover:bg-blue-800 text-blue-100"><i class="fas fa-book"></i> Aulas</a></li>
+                <li><a href="painel_tatico.html" class="hover:bg-blue-800 text-blue-100"><i class="fas fa-heartbeat"></i> TAF & Saúde</a></li>
+            </ul>
+        </div>
+
+        <div class="navbar-end gap-2">
+            <div class="tooltip tooltip-bottom" data-tip="Backup do Cronograma">
+                <button onclick="exportData()" class="btn btn-ghost btn-circle text-blue-100 hover:text-yellow-400"><i class="fas fa-download"></i></button>
+            </div>
+            <div class="tooltip tooltip-bottom" data-tip="Restaurar Cronograma">
+                <label class="btn btn-ghost btn-circle text-blue-100 hover:text-yellow-400 cursor-pointer">
+                    <i class="fas fa-upload"></i> 
+                    <input type="file" class="hidden" onchange="importData(this)">
+                </label>
+            </div>
+            <div class="tooltip tooltip-bottom tooltip-error" data-tip="Resetar Progresso">
+                <button onclick="resetSchedule()" class="btn btn-ghost btn-circle text-blue-100 hover:text-red-400"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <main class="max-w-7xl mx-auto p-4 md:p-6 space-y-6">
+
+        <div class="card bg-base-100 shadow-sm border border-slate-200">
+            <div class="card-body p-6 flex flex-col md:flex-row justify-between items-center gap-6 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-2 h-full bg-blue-600"></div>
+
+                <div class="flex-1 w-full pl-2">
+                    <div class="flex justify-between items-end mb-2">
+                        <div>
+                            <h2 class="font-bold text-slate-800 text-lg">Progresso Geral</h2>
+                            <p class="text-xs text-slate-500">Pipeline de estudos para aprovação na Marinha.</p>
+                        </div>
+                        <span class="text-3xl font-black text-blue-900" id="progress-text">0%</span>
+                    </div>
+                    <progress id="progress-bar" class="progress progress-info w-full h-3 shadow-sm" value="0" max="100"></progress>
+                    <div class="mt-3 flex justify-between text-xs font-medium text-slate-400">
+                        <span><i class="fas fa-play text-blue-500 mr-1"></i> Início: 23/02/2026</span>
+                        <span class="text-red-600 font-bold"><i class="fas fa-flag-checkered mr-1"></i> Prova: 24/05/2026</span>
+                    </div>
+                </div>
+                
+                <div class="flex gap-3">
+                    <div class="bg-blue-50 rounded-xl border border-blue-100 p-4 text-center min-w-[120px]">
+                        <div class="text-[10px] text-blue-500 uppercase font-bold tracking-widest mb-1">Hoje</div>
+                        <div class="font-bold text-blue-900 text-lg leading-none" id="today-display">-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex gap-2 overflow-x-auto pb-2">
+            <div class="badge badge-success gap-1 text-white font-bold"><i class="fas fa-check-circle text-xs"></i> Concluído</div>
+            <div class="badge badge-ghost bg-white border-slate-300 gap-1 text-slate-500 font-bold"><i class="far fa-circle text-xs"></i> Pendente</div>
+            <div class="badge badge-info badge-outline gap-1 font-bold border-2">Hoje</div>
+        </div>
+
+        <div id="calendar-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-4 select-none"></div>
+
+    </main>
+
+    <dialog id="day-modal" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box p-0 overflow-hidden bg-slate-50">
+            <div class="bg-white p-5 border-b border-slate-100 flex justify-between items-center">
+                <div>
+                    <h3 class="font-black text-xl text-slate-800" id="modal-title">Dia X</h3>
+                    <p class="text-xs text-slate-500 font-medium" id="modal-date">Data</p>
+                </div>
+                <form method="dialog">
+                    <button class="btn btn-sm btn-circle btn-ghost"><i class="fas fa-times"></i></button>
+                </form>
+            </div>
+            
+            <div class="p-6">
+                <div class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-3">Foco do Dia</div>
+                <div class="p-4 rounded-xl border-l-4 shadow-sm mb-5 bg-white" id="modal-subject-box"></div>
+                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+                    <p class="text-sm text-slate-600 leading-relaxed font-medium" id="modal-desc"></p>
+                </div>
+            </div>
+
+            <div class="p-4 bg-white border-t border-slate-100 flex gap-3">
+                <button id="btn-mark-done" onclick="markAsDone()" class="btn btn-success flex-1 text-white shadow-md"></button>
+                <form method="dialog"><button class="btn btn-ghost border-slate-200">Fechar</button></form>
+            </div>
+        </div>
+        <form method="dialog" class="modal-backdrop"><button>close</button></form>
+    </dialog>
+
+    <script>
+        const START_DATE = new Date('2026-02-23T00:00:00');
+        const END_DATE = new Date('2026-05-24T00:00:00');
+        const STORAGE_KEY = 'cpt2026_schedule_v3'; 
+
+        const SUBJECTS = {
+            'ENG': { label: 'Eng. Software', color: 'badge-info', border: 'border-blue-400', text: 'text-blue-700' },
+            'DEV': { label: 'Desenvolvimento', color: 'badge-warning', border: 'border-orange-400', text: 'text-orange-700' },
+            'GOV': { label: 'Governança TI', color: 'badge-secondary', border: 'border-purple-400', text: 'text-purple-700' },
+            'REDES': { label: 'Redes e Seg.', color: 'badge-success', border: 'border-emerald-400', text: 'text-emerald-700' },
+            'BD': { label: 'Bancos de Dados', color: 'badge-accent', border: 'border-teal-400', text: 'text-teal-700' },
+            'ARQ': { label: 'Arquitetura/SO', color: 'badge-neutral', border: 'border-slate-500', text: 'text-slate-700' },
+            'REV': { label: 'Simulado/Rev.', color: 'badge-warning badge-outline', border: 'border-yellow-500', text: 'text-yellow-700' }
+        };
+
+        const classesENG = [
+            "Aula 00 - Metodologias de Desenvolvimento", "Aula 01 - Metodologias de Desenvolvimento I", "Aula 02 - Metodologias Ágeis",
+            "Aula 03 - SCRUM", "Aula 04 - Engenharia de Requisitos", "Aula 05 - Análise de Projetos Orientada a Objetos (APOO)",
+            "Aula 06 - UML", "Aula 07 - Qualidade de Software", "Aula 08 - Teste de Software",
+            "Aula 09 - Arquitetura Orientada a Serviço (SOA)", "Aula 10 - Padrões de Projeto"
+        ];
+        const classesDEV = ["Aula 00 - Métodos de Ordenação", "Aula 01 - Estruturas de Dados", "Aula 02 - Estruturas de Dados II", "Aula 03 - JAVA", "Aula 04 - Python", "Aula 05 - XML", "Aula 06 - JSON"];
+        const classesGOV = ["Aula 00 - PMBOK 7", "Aula 01 - PETI", "Aula 02 - COBIT 2019", "Aula 03 - ITIL 4", "Aula 04 - CMMI 3"];
+        const classesREDES = ["Aula 00 - Tipos de Redes", "Aula 01 - Transmissão", "Aula 02 - Modelo OSI/TCPIP", "Aula 03 - Ethernet/ATM", "Aula 04 - STP/VLANs", "Aula 05 - IPv4", "Aula 06 - NAT/IPv6/IoT", "Aula 07 - MPLS/Transporte", "Aula 08 - HTTP/Email", "Aula 09 - DNS/DHCP/FTP", "Aula 10 - Gerenciamento", "Aula 11 - Segurança/IAM", "Aula 12 - Firewall/Proxy", "Aula 13 - VPN/SSL", "Aula 14 - Ataques/OWASP", "Aula 15 - Criptografia", "Aula 16 - Assinatura Digital", "Aula 17 - Nuvem/Containers"];
+        const classesBD = ["Aula 00 - SGBDs", "Aula 01 - Modelo Relacional", "Aula 02 - SQL", "Aula 03 - Administração", "Aula 04 - BI/ETL", "Aula 05 - Dimensional", "Aula 06 - Data Mining", "Aula 07 - NoSQL", "Aula 08 - IA Gen", "Aula 09 - ML", "Aula 10 - Deep Learning", "Aula 11 - PLN", "Aula 12 - Otimização", "Aula 13 - Limpeza", "Aula 14 - Dama DMBOK"];
+        const classesARQ = ["Aula 00 - RISC/CISC", "Aula 01 - CPU/Memória", "Aula 02 - Sistemas Numéricos", "Aula 03 - Gerência de Processos", "Aula 04 - Linux"];
+
+        const STUDY_CYCLE = [];
+        const maxLen = Math.max(classesENG.length, classesDEV.length, classesGOV.length, classesREDES.length, classesBD.length, classesARQ.length);
+        for (let i = 0; i < maxLen; i++) {
+            if (i < classesENG.length) STUDY_CYCLE.push({ code: 'ENG', topic: classesENG[i] });
+            if (i < classesREDES.length) STUDY_CYCLE.push({ code: 'REDES', topic: classesREDES[i] });
+            if (i < classesBD.length) STUDY_CYCLE.push({ code: 'BD', topic: classesBD[i] });
+            if (i < classesDEV.length) STUDY_CYCLE.push({ code: 'DEV', topic: classesDEV[i] });
+            if (i < classesGOV.length) STUDY_CYCLE.push({ code: 'GOV', topic: classesGOV[i] });
+            if (i < classesARQ.length) STUDY_CYCLE.push({ code: 'ARQ', topic: classesARQ[i] });
+        }
+
+        let scheduleData = [];
+        let activeDayIndex = null;
+
+        function init() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) { scheduleData = JSON.parse(stored); } else { generateSchedule(); }
+            const now = new Date();
+            document.getElementById('today-display').innerText = now.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+            renderCalendar();
+            updateProgress();
+        }
+
+        function generateSchedule() {
+            scheduleData = [];
+            let currentDate = new Date(START_DATE);
+            let cycleIndex = 0;
+            while (currentDate <= END_DATE) {
+                const dayOfWeek = currentDate.getDay(); 
+                let dayContent = (dayOfWeek === 0) ? { code: 'REV', topic: 'Simulado ou Caderno de Erros', desc: 'Revise os erros da semana.' } 
+                : { ...STUDY_CYCLE[cycleIndex % STUDY_CYCLE.length], desc: '1h Teoria + 30min Questões.' };
+                if (dayOfWeek !== 0) cycleIndex++;
+                scheduleData.push({ date: currentDate.toISOString(), ...dayContent, completed: false });
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            save();
+        }
+
+        function renderCalendar() {
+            const container = document.getElementById('calendar-grid');
+            container.innerHTML = '';
+            const today = new Date(); today.setHours(0,0,0,0);
+            let hasScrolled = false;
+
+            scheduleData.forEach((day, index) => {
+                const dayDate = new Date(day.date);
+                const isToday = new Date(day.date).setHours(0,0,0,0) === today.getTime();
+                const style = SUBJECTS[day.code];
+                
+                let wrapperClass = `card-day bg-white rounded-2xl p-4 border cursor-pointer flex flex-col justify-between h-[125px] shadow-sm ${day.completed ? 'completed-card border-green-200' : 'border-slate-200 hover:border-blue-300'} ${isToday ? 'current-day-marker' : ''}`;
+
+                const html = `
+                    <div class="${wrapperClass}" onclick="openModal(${index})">
+                        <div class="flex justify-between items-start">
+                            <span class="text-[10px] font-bold ${day.completed ? 'text-green-700' : 'text-slate-400'} uppercase">
+                                ${dayDate.toLocaleDateString('pt-BR', { weekday: 'short' })} ${dayDate.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}
+                            </span>
+                            ${day.completed ? '<i class="fas fa-check-circle text-green-500"></i>' : '<div class="border-2 border-slate-200 rounded-full w-4 h-4"></div>'}
+                        </div>
+                        <div class="mt-2 flex flex-col items-start gap-1">
+                            ${!day.completed ? `<div class="badge ${style.color} text-[9px] font-bold uppercase py-2 px-2 h-auto text-left leading-none max-w-full truncate rounded-md">${style.label}</div>` : ''}
+                            <h4 class="text-[11px] font-bold leading-tight line-clamp-2 ${day.completed ? 'text-green-800' : 'text-slate-800'}">${day.topic}</h4>
+                        </div>
+                    </div>`;
+                container.innerHTML += html;
+            });
+
+            if(!hasScrolled) {
+                setTimeout(() => {
+                    const el = document.querySelector('.current-day-marker');
+                    if(el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 300);
+                hasScrolled = true;
+            }
+        }
+
+        function openModal(index) {
+            activeDayIndex = index;
+            const day = scheduleData[index];
+            const style = SUBJECTS[day.code];
+            document.getElementById('modal-title').innerText = `Dia ${index + 1}`;
+            document.getElementById('modal-date').innerText = new Date(day.date).toLocaleDateString('pt-BR', {weekday: 'long', day: '2-digit', month: 'long'});
+            const subjectBox = document.getElementById('modal-subject-box');
+            subjectBox.className = `p-4 rounded-xl border-l-4 shadow-sm mb-5 bg-white ${style.border}`;
+            subjectBox.innerHTML = `<div class="font-bold text-[10px] uppercase tracking-widest mb-1 ${style.text}">${style.label}</div><div class="text-slate-800 font-bold text-lg leading-tight">${day.topic}</div>`;
+            document.getElementById('modal-desc').innerText = day.desc;
+            const btn = document.getElementById('btn-mark-done');
+            btn.innerHTML = day.completed ? '<i class="fas fa-undo"></i> Reabrir Missão' : '<i class="fas fa-check-circle"></i> Concluir Missão';
+            btn.className = day.completed ? "btn btn-warning btn-outline flex-1" : "btn btn-success text-white flex-1 shadow-md";
+            document.getElementById('day-modal').showModal();
+        }
+
+        function markAsDone() {
+            if (activeDayIndex !== null) {
+                scheduleData[activeDayIndex].completed = !scheduleData[activeDayIndex].completed;
+                save(); renderCalendar(); updateProgress(); document.getElementById('day-modal').close();
+            }
+        }
+
+        function updateProgress() {
+            const total = scheduleData.length;
+            const completed = scheduleData.filter(d => d.completed).length;
+            const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+            document.getElementById('progress-text').innerText = `${percent}%`;
+            document.getElementById('progress-bar').value = percent;
+        }
+
+        function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(scheduleData)); }
+        function resetSchedule() { if(confirm("Apagar progresso?")) { localStorage.removeItem(STORAGE_KEY); location.reload(); } }
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(scheduleData));
+            const dl = document.createElement('a'); dl.setAttribute("href", dataStr); dl.setAttribute("download", "cronograma_cpt.json"); dl.click();
+        }
+        function importData(input) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                scheduleData = JSON.parse(e.target.result);
+                save(); renderCalendar(); updateProgress(); alert("Restaurado!");
+            };
+            reader.readAsText(input.files[0]);
+        }
+        init();
+    </script>
+</body>
+</html>

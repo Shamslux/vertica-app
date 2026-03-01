@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula Avançada: Regência Verbal - Marinha do Brasil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { 
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Lora', 'serif']
+                    },
+                    colors: {
+                        classic: { 50: '#f8fafc', 500: '#64748b', 700: '#334155', 900: '#0f172a' },
+                        correct: { 50: '#ecfdf5', 500: '#10b981', 700: '#047857' },
+                        alert: { 50: '#fffbeb', 500: '#f59e0b', 700: '#b45309' },
+                        danger: { 50: '#fef2f2', 500: '#ef4444', 700: '#b91c1c' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); border: 1px solid rgba(226, 232, 240, 0.8); }
+        .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15); }
+        .example-box { border-left: 4px solid #10b981; background-color: #ecfdf5; padding: 1rem; border-radius: 0 0.5rem 0.5rem 0; margin-top: 0.5rem; }
+        .wrong-box { border-left: 4px solid #ef4444; background-color: #fef2f2; padding: 0.75rem; border-radius: 0 0.5rem 0.5rem 0; margin-top: 0.5rem; }
+        .verb-title { font-family: 'Lora', serif; font-weight: 600; font-style: italic; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased leading-relaxed font-sans">
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm bg-opacity-90 backdrop-blur-md">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-classic-900 rounded-xl flex items-center justify-center text-white font-serif font-extrabold text-2xl shadow-lg">§</div>
+                <div>
+                    <h1 class="text-xl font-bold text-slate-900 leading-tight">Língua Portuguesa: Regência Verbal</h1>
+                    <p class="text-xs text-slate-500 font-medium tracking-wide uppercase">Foco Bibliográfico: Cegalla & Bechara</p>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <span class="px-3 py-1 bg-classic-50 text-classic-700 rounded-full text-[10px] font-bold border border-classic-200 uppercase tracking-tighter">Polissemia</span>
+                <span class="px-3 py-1 bg-alert-50 text-alert-700 rounded-full text-[10px] font-bold border border-alert-200 uppercase tracking-tighter">Preposições</span>
+                <span class="px-3 py-1 bg-correct-50 text-correct-700 rounded-full text-[10px] font-bold border border-correct-200 uppercase tracking-tighter">Norma Culta</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-10 space-y-20">
+
+        <section class="text-center max-w-3xl mx-auto mb-16">
+            <h2 class="text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">Os "Queridinhos" da Marinha</h2>
+            <p class="text-lg text-slate-600">
+                O examinador testa a distância entre a fala cotidiana e o registro formal. O segredo da prova está nos verbos que mudam de significado ao mudarem de transitividade.
+            </p>
+        </section>
+
+        <section>
+            <div class="flex items-center gap-4 mb-8 border-b border-slate-200 pb-4">
+                <div class="w-10 h-10 rounded-lg bg-alert-500 text-white flex items-center justify-center shadow-lg font-bold text-xl">!</div>
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800">Verbos Polissêmicos por Regência</h2>
+                    <p class="text-xs text-slate-500 uppercase font-semibold">Mudou a preposição, mudou o sentido</p>
+                </div>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8 mb-6">
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm card-hover">
+                    <h3 class="text-2xl verb-title text-classic-900 mb-2">Assistir</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <span class="inline-block px-2 py-1 bg-correct-100 text-correct-700 text-xs font-bold rounded mb-1">VTI (com prep. A)</span> <span class="text-sm font-medium">= Ver, presenciar</span>
+                            <div class="example-box text-sm">O oficial assistiu <strong>ao</strong> desfile militar.</div>
+                            <p class="text-[11px] text-classic-500 mt-1">*Atenção: Não aceita lhe/lhes como complemento. Correto: "Assistiu a ele".</p>
+                        </div>
+                        <div>
+                            <span class="inline-block px-2 py-1 bg-classic-100 text-classic-700 text-xs font-bold rounded mb-1">VTD ou VTI</span> <span class="text-sm font-medium">= Socorrer, ajudar</span>
+                            <div class="example-box text-sm">O médico assistiu <strong>o</strong> marinheiro. (ou <strong>ao</strong> marinheiro)</div>
+                        </div>
+                        <div>
+                            <span class="inline-block px-2 py-1 bg-alert-100 text-alert-700 text-xs font-bold rounded mb-1">VI (com prep. EM)</span> <span class="text-sm font-medium">= Morar, residir (arcaico)</span>
+                            <div class="example-box text-sm">O comandante assiste <strong>em</strong> Brasília. (Adjunto Adverbial de Lugar)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm card-hover">
+                        <h3 class="text-2xl verb-title text-classic-900 mb-2">Aspirar & Visar</h3>
+                        <p class="text-sm text-slate-600 mb-3">Ambos possuem a mesma lógica de transição sintática e semântica.</p>
+                        <div class="space-y-4">
+                            <div>
+                                <span class="inline-block px-2 py-1 bg-classic-100 text-classic-700 text-xs font-bold rounded mb-1">VTD</span> <span class="text-sm font-medium">= Sorver/Inalar (Aspirar) | Mirar/Vistar (Visar)</span>
+                                <div class="example-box text-sm">
+                                    O praça aspirava <strong>o</strong> ar puro.<br>
+                                    O atirador visou <strong>o</strong> alvo. / O gerente visou <strong>o</strong> cheque.
+                                </div>
+                            </div>
+                            <div>
+                                <span class="inline-block px-2 py-1 bg-correct-100 text-correct-700 text-xs font-bold rounded mb-1">VTI (com prep. A)</span> <span class="text-sm font-medium">= Almejar, desejar ardentemente</span>
+                                <div class="example-box text-sm">
+                                    Ele aspirava <strong>ao</strong> posto de almirante.<br>
+                                    O projeto visa <strong>ao</strong> bem-estar da tropa.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="grid lg:grid-cols-2 gap-8 items-start">
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4 mb-2 border-b border-slate-200 pb-4">
+                        <div class="w-10 h-10 rounded-lg bg-danger-500 text-white flex items-center justify-center shadow-lg font-bold">X</div>
+                        <h2 class="text-2xl font-bold text-slate-800">A Casca de Banana: Implicar</h2>
+                    </div>
+                    <p class="text-sm text-slate-600">Este é, sem dúvida, um dos verbos mais errados pelos candidatos. No sentido de <strong>"acarretar" ou "trazer como consequência"</strong>, ele é <strong>Direto (VTD)</strong>. Não exige preposição "em".</p>
+                    
+                    <div class="wrong-box text-sm text-danger-700">
+                        <strong>Erro Crasso:</strong> O atraso implicou <u>no</u> cancelamento da missão.
+                    </div>
+                    <div class="example-box text-sm text-correct-700 font-medium">
+                        <strong>Forma Culta:</strong> O atraso implicou <u>o</u> cancelamento da missão.
+                    </div>
+
+                    <p class="text-xs text-classic-500 mt-4">Só será transitivo indireto (com 'com') no sentido de ter antipatia: <em>"A menina implicava com o irmão."</em></p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl shadow-sm border-t-4 border-alert-500">
+                    <h3 class="text-2xl verb-title text-classic-900 mb-4">Preferir</h3>
+                    <p class="text-sm text-slate-600 mb-4">Na norma culta, quem prefere, prefere <strong>algo A outro algo</strong>. É um verbo Transitivo Direto e Indireto (VTDI).</p>
+                    
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-2">
+                            <span class="text-danger-500 mt-1 font-bold">✗</span>
+                            <span class="text-sm">Prefiro <em>mais</em> o campo <em>do que</em> a cidade. <br><span class="text-[10px] text-danger-600 font-bold uppercase">Pleonasmo e Regência incorreta</span></span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-correct-500 mt-1 font-bold">✓</span>
+                            <span class="text-sm">Prefiro o campo <strong>à</strong> cidade. <br><span class="text-[10px] text-correct-600 font-bold uppercase">Correto (Ocorre crase se a palavra feminina admitir artigo)</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="space-y-8">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-10 h-10 rounded-full bg-classic-800 text-white flex items-center justify-center shadow-lg font-serif italic text-xl">P</div>
+                <h2 class="text-3xl font-bold text-slate-800 tracking-tight">Regras Estruturais Fixas</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 relative">
+                <div class="glass-panel p-6 rounded-3xl border-l-8 border-classic-500 card-hover">
+                    <h3 class="text-xl font-extrabold text-slate-800 mb-2">Esquecer / Lembrar</h3>
+                    <p class="text-xs text-slate-600 mb-4">A regra é binária: <strong>Ou usa tudo, ou não usa nada</strong> (pronome + preposição).</p>
+                    <ul class="space-y-4">
+                        <li>
+                            <p class="text-xs font-bold text-classic-700 uppercase">Não Pronominal = VTD</p>
+                            <p class="text-sm bg-white p-2 rounded border mt-1">O aluno esqueceu <strong>o</strong> livro.</p>
+                        </li>
+                        <li>
+                            <p class="text-xs font-bold text-correct-700 uppercase">Pronominal = VTI (prep. DE)</p>
+                            <p class="text-sm bg-white p-2 rounded border mt-1">O aluno esqueceu-<strong>se</strong> <strong>do</strong> livro.</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="glass-panel p-6 rounded-3xl border-l-8 border-classic-500 card-hover">
+                    <h3 class="text-xl font-extrabold text-slate-800 mb-2">Pagar / Perdoar / Agradecer</h3>
+                    <p class="text-xs text-slate-600 mb-4">A transitividade depende da natureza do objeto (se é "coisa" ou "pessoa").</p>
+                    <ul class="space-y-4">
+                        <li>
+                            <p class="text-xs font-bold text-classic-700 uppercase">Se for COISA = VTD</p>
+                            <p class="text-sm bg-white p-2 rounded border mt-1">Paguei <strong>a</strong> dívida. / Agradeceu <strong>o</strong> presente.</p>
+                        </li>
+                        <li>
+                            <p class="text-xs font-bold text-correct-700 uppercase">Se for PESSOA = VTI (prep. A)</p>
+                            <p class="text-sm bg-white p-2 rounded border mt-1">Paguei <strong>ao</strong> mecânico. / Perdoou <strong>aos</strong> inimigos.</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-3xl shadow-md border border-slate-200 overflow-hidden mt-12">
+            <div class="p-6 bg-classic-900">
+                <h3 class="text-white font-bold text-lg text-center font-serif">Tabela de Consulta Rápida - Véspera de Prova</h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead>
+                        <tr class="bg-slate-100 border-b border-slate-200">
+                            <th class="px-6 py-4 font-bold text-slate-600">Verbo</th>
+                            <th class="px-6 py-4 font-bold text-slate-600">Sentido</th>
+                            <th class="px-6 py-4 font-bold text-slate-600">Regência / Complemento</th>
+                            <th class="px-6 py-4 font-bold text-slate-600">Exemplo Correto</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr>
+                            <td class="px-6 py-4 font-semibold text-slate-800">Chegar / Ir</td>
+                            <td class="px-6 py-4 text-slate-600">Deslocamento</td>
+                            <td class="px-6 py-4 text-correct-600 font-bold">VI + prep. A</td>
+                            <td class="px-6 py-4 italic">Vou <strong>ao</strong> quartel. (Não "no")</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 font-semibold text-slate-800">Obedecer / Desobedecer</td>
+                            <td class="px-6 py-4 text-slate-600">Submissão</td>
+                            <td class="px-6 py-4 text-correct-600 font-bold">VTI + prep. A</td>
+                            <td class="px-6 py-4 italic">Obedeça <strong>às</strong> regras.</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 font-semibold text-slate-800">Simpatizar</td>
+                            <td class="px-6 py-4 text-slate-600">Afinidade</td>
+                            <td class="px-6 py-4 text-correct-600 font-bold">VTI + prep. COM</td>
+                            <td class="px-6 py-4 italic">Simpatizou <strong>com</strong> o projeto. (Não é pronominal)</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 font-semibold text-slate-800">Custar</td>
+                            <td class="px-6 py-4 text-slate-600">Ser difícil</td>
+                            <td class="px-6 py-4 text-correct-600 font-bold">VTI + prep. A</td>
+                            <td class="px-6 py-4 italic">Custou-<strong>lhe</strong> entender o assunto.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer class="text-center py-10 border-t border-slate-200 mt-12">
+            <p class="text-slate-400 text-[10px] uppercase tracking-widest font-bold">Material de Apoio • Sintaxe: Regência • Marinha do Brasil</p>
+        </footer>
+
+    </main>
+</body>
+</html>

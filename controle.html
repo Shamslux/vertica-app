@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Estudos - CP-T 2026</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        body { background-color: #f8fafc; }
+        /* Suavização da scrollbar do heatmap para manter o visual limpo */
+        .heatmap-scroll::-webkit-scrollbar { height: 6px; }
+        .heatmap-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .heatmap-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .heatmap-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="text-slate-800 pb-20 font-sans">
+
+    <div class="navbar bg-blue-900 text-white sticky top-0 z-50 shadow-lg px-4 md:px-8">
+        <div class="navbar-start">
+            <div class="flex items-center gap-3">
+                <i class="fas fa-anchor text-2xl text-yellow-400"></i>
+                <div>
+                    <h1 class="text-xl font-bold leading-none">CP-T 2026</h1>
+                    <span class="text-[10px] text-blue-200 uppercase tracking-widest font-semibold">Painel de Controle</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1 gap-1">
+                <li><a href="index.html" class="hover:bg-blue-800 text-blue-100"><i class="fas fa-list-alt"></i> Edital</a></li>
+                <li><a href="controle.html" class="bg-blue-700 text-white font-bold"><i class="fas fa-chart-line"></i> Controle & Ciclo</a></li>
+                <li><a href="cronograma.html" class="hover:bg-blue-800 text-blue-100"><i class="fas fa-calendar-alt"></i> Cronograma</a></li>
+                <li><a href="aulas.html" class="hover:bg-blue-800 text-blue-100"><i class="fas fa-book"></i> Aulas</a></li>
+                <li><a href="painel_tatico.html" class="hover:bg-blue-800 text-blue-100"><i class="fas fa-heartbeat"></i> TAF & Saúde</a></li>
+            </ul>
+        </div>
+
+        <div class="navbar-end gap-2">
+            <div class="tooltip tooltip-bottom" data-tip="Exportar Backup">
+                <button onclick="exportData()" class="btn btn-ghost btn-circle text-blue-100 hover:text-yellow-400"><i class="fas fa-download"></i></button>
+            </div>
+            <div class="tooltip tooltip-bottom" data-tip="Importar Backup">
+                <label class="btn btn-ghost btn-circle text-blue-100 hover:text-yellow-400 cursor-pointer">
+                    <i class="fas fa-upload"></i> 
+                    <input type="file" class="hidden" onchange="importData(this)">
+                </label>
+            </div>
+            <div class="tooltip tooltip-bottom tooltip-error" data-tip="Limpar Tudo">
+                <button onclick="resetData()" class="btn btn-ghost btn-circle text-blue-100 hover:text-red-400"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <main class="max-w-7xl mx-auto p-4 md:p-6 space-y-6">
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="card bg-base-100 shadow-sm border-l-4 border-blue-500">
+                <div class="card-body p-4">
+                    <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Tempo Total</div>
+                    <div class="text-2xl font-black text-slate-700" id="kpi-hours">0h 00m</div>
+                </div>
+            </div>
+            <div class="card bg-base-100 shadow-sm border-l-4 border-emerald-500">
+                <div class="card-body p-4">
+                    <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Questões Feitas</div>
+                    <div class="text-2xl font-black text-slate-700" id="kpi-quest">0</div>
+                </div>
+            </div>
+            <div class="card bg-base-100 shadow-sm border-l-4 border-amber-500">
+                <div class="card-body p-4">
+                    <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">% Acertos Geral</div>
+                    <div class="text-2xl font-black text-slate-700" id="kpi-acc">0%</div>
+                </div>
+            </div>
+            <div class="card bg-base-100 shadow-sm border-l-4 border-purple-500">
+                <div class="card-body p-4">
+                    <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Ciclos/Sessões</div>
+                    <div class="text-2xl font-black text-slate-700" id="kpi-sessions">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-base-100 shadow-sm border border-slate-200">
+            <div class="card-body p-5">
+                <div class="flex justify-between items-end mb-2">
+                    <h2 class="font-bold text-slate-700"><i class="fas fa-calendar-check text-emerald-500 mr-2"></i>Mapa de Consistência</h2>
+                    
+                    <div class="flex items-center gap-1 text-[10px] text-slate-400 font-medium">
+                        <span>Menos</span>
+                        <div class="w-3 h-3 rounded-sm bg-slate-100"></div>
+                        <div class="w-3 h-3 rounded-sm bg-emerald-200"></div>
+                        <div class="w-3 h-3 rounded-sm bg-emerald-400"></div>
+                        <div class="w-3 h-3 rounded-sm bg-emerald-600"></div>
+                        <div class="w-3 h-3 rounded-sm bg-emerald-800"></div>
+                        <span>Mais</span>
+                    </div>
+                </div>
+                
+                <div class="w-full overflow-x-auto heatmap-scroll pb-2" dir="rtl">
+                    <div id="heatmap-container" class="inline-block py-2" dir="ltr"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-base-100 shadow-sm border border-slate-200">
+            <div class="card-body p-5 md:p-6">
+                <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
+                    <h2 class="font-bold text-lg text-blue-900"><i class="fas fa-plus-circle mr-2"></i>Registrar Sessão</h2>
+                    <button onclick="clearForm()" class="btn btn-ghost btn-xs text-gray-400 hover:text-blue-600">Limpar Campos</button>
+                </div>
+
+                <form id="studyForm" onsubmit="handleFormSubmit(event)" class="grid grid-cols-2 md:grid-cols-6 gap-x-4 gap-y-3">
+                    <input type="hidden" id="entry-id">
+
+                    <div class="form-control col-span-2 md:col-span-1">
+                        <label class="label"><span class="label-text font-bold text-xs text-slate-500 uppercase">Data</span></label>
+                        <input type="date" id="in-date" required class="input input-sm input-bordered w-full focus:input-primary">
+                    </div>
+
+                    <div class="form-control col-span-2 md:col-span-2">
+                        <label class="label"><span class="label-text font-bold text-xs text-slate-500 uppercase">Matéria</span></label>
+                        <select id="in-subject" required class="select select-sm select-bordered w-full focus:select-primary">
+                            <option value="Eng. Software">Eng. Software</option>
+                            <option value="Governança de TI">Governança de TI</option>
+                            <option value="Algoritmos e Estruturas de Dados">Algoritmos e Estruturas de Dados</option>
+                            <option value="Banco de Dados">Banco de Dados</option>
+                            <option value="Redes de Computadores">Redes de Computadores</option>
+                            <option value="Segurança da Informação">Segurança da Informação</option>
+                            <option value="Sistemas Operacionais">Sistemas Operacionais</option>
+                        </select>
+                    </div>
+
+                    <div class="form-control col-span-2 md:col-span-3">
+                        <label class="label"><span class="label-text font-bold text-xs text-slate-500 uppercase">Assunto</span></label>
+                        <input type="text" id="in-topic" placeholder="Ex: Metodologias Ágeis, Normalização..." required class="input input-sm input-bordered w-full focus:input-primary">
+                    </div>
+
+                    <div class="form-control col-span-1">
+                        <label class="label"><span class="label-text font-bold text-xs text-slate-500 uppercase">Modo</span></label>
+                        <select id="in-mode" class="select select-sm select-bordered w-full focus:select-primary">
+                            <option value="PDF">PDF</option>
+                            <option value="Videoaula">Videoaula</option>
+                            <option value="Banco de Questões">Banco de Questões</option>
+                            <option value="Questões de IA">Questões de IA</option>
+                            <option value="Revisão">Revisão</option>
+                        </select>
+                    </div>
+
+                    <div class="form-control col-span-1">
+                        <label class="label"><span class="label-text font-bold text-xs text-slate-500 uppercase">Eixo</span></label>
+                        <select id="in-axis" class="select select-sm select-bordered w-full focus:select-primary">
+                            <option value="Principal">Principal (TI)</option>
+                            <option value="Geral">Geral (Port/Mat)</option>
+                            <option value="Secundário">Secundário</option>
+                        </select>
+                    </div>
+
+                    <div class="form-control col-span-1">
+                        <label class="label"><span class="label-text font-bold text-xs text-slate-500 uppercase">Min. Teoria</span></label>
+                        <input type="number" id="in-theory" min="0" value="0" class="input input-sm input-bordered w-full focus:input-primary">
+                    </div>
+
+                    <div class="form-control col-span-1">
+                        <label class="label"><span class="label-text font-bold text-xs text-slate-500 uppercase">Min. Prática</span></label>
+                        <input type="number" id="in-practice" min="0" value="0" class="input input-sm input-bordered w-full focus:input-primary">
+                    </div>
+
+                    <div class="form-control col-span-1">
+                        <label class="label"><span class="label-text font-bold text-xs text-slate-500 uppercase">Questões</span></label>
+                        <input type="number" id="in-q-total" min="0" placeholder="Total" class="input input-sm input-bordered w-full focus:input-primary" onchange="calcPercent()">
+                    </div>
+
+                    <div class="form-control col-span-1">
+                        <label class="label"><span class="label-text font-bold text-xs text-slate-500 uppercase">Acertos</span></label>
+                        <input type="number" id="in-q-correct" min="0" placeholder="Acertos" class="input input-sm input-bordered w-full focus:input-primary" onchange="calcPercent()">
+                    </div>
+
+                    <div class="col-span-2 md:col-span-5 flex items-end">
+                         <div class="bg-slate-50 border border-slate-200 rounded p-2 px-4 flex gap-4 items-center">
+                            <span class="text-xs text-slate-500 font-bold uppercase">Aproveitamento:</span>
+                            <span id="display-percent" class="font-black text-lg text-slate-300">-</span>
+                        </div>
+                    </div>
+
+                    <div class="col-span-2 md:col-span-1 flex items-end mt-4 md:mt-0">
+                        <button type="submit" id="btn-submit" class="btn btn-success text-white w-full btn-sm h-10 shadow-sm">
+                            <i class="fas fa-save mr-1"></i> Salvar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card bg-base-100 shadow-sm border border-slate-200 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="table table-zebra table-sm w-full">
+                    <thead class="bg-slate-800 text-slate-100 uppercase text-[10px] tracking-wider">
+                        <tr>
+                            <th class="py-3 px-4 rounded-tl-lg">Data</th>
+                            <th class="py-3 px-4">Matéria / Assunto</th>
+                            <th class="py-3 px-4 text-center">Modo</th>
+                            <th class="py-3 px-4 text-center">Tempo</th>
+                            <th class="py-3 px-4 text-center">Questões</th>
+                            <th class="py-3 px-4 text-center">% Acerto</th>
+                            <th class="py-3 px-4 text-center rounded-tr-lg">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="log-table-body" class="text-xs">
+                        </tbody>
+                </table>
+            </div>
+            
+            <div id="empty-state" class="hidden p-12 text-center text-slate-400">
+                <i class="fas fa-clipboard-list text-5xl mb-3 opacity-30"></i>
+                <p class="font-medium">Nenhum registro encontrado. Registre sua primeira sessão de estudos!</p>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        let logs = [];
+        const STORAGE_KEY = 'cpt2026_log_v1';
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('in-date').valueAsDate = new Date();
+            loadData();
+        });
+
+        function loadData() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                logs = JSON.parse(stored);
+                // Ordenar por data (mais recente primeiro)
+                logs.sort((a, b) => new Date(b.date) - new Date(a.date));
+            }
+            renderTable();
+            updateKPIs();
+            renderHeatmap(); // Novo: Renderiza o mapa estilo Github
+        }
+
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(logs));
+            loadData(); 
+        }
+
+        // ---------- LÓGICA DO FORMULÁRIO ----------
+        function calcPercent() {
+            const total = parseInt(document.getElementById('in-q-total').value) || 0;
+            const correct = parseInt(document.getElementById('in-q-correct').value) || 0;
+            const display = document.getElementById('display-percent');
+            
+            if (total > 0) {
+                const pct = Math.round((correct / total) * 100);
+                display.innerText = `${pct}%`;
+                display.className = `font-black text-lg ${getColorClass(pct)}`;
+            } else {
+                display.innerText = "-";
+                display.className = "font-black text-lg text-slate-300";
+            }
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            const id = document.getElementById('entry-id').value;
+            const theory = parseInt(document.getElementById('in-theory').value) || 0;
+            const practice = parseInt(document.getElementById('in-practice').value) || 0;
+            const qTotal = parseInt(document.getElementById('in-q-total').value) || 0;
+            const qCorrect = parseInt(document.getElementById('in-q-correct').value) || 0;
+
+            const entry = {
+                id: id ? parseInt(id) : Date.now(),
+                date: document.getElementById('in-date').value,
+                subject: document.getElementById('in-subject').value,
+                topic: document.getElementById('in-topic').value,
+                mode: document.getElementById('in-mode').value,
+                axis: document.getElementById('in-axis').value,
+                timeTheory: theory,
+                timePractice: practice,
+                qTotal: qTotal,
+                qCorrect: qCorrect,
+                pct: qTotal > 0 ? Math.round((qCorrect / qTotal) * 100) : null
+            };
+
+            if (id) {
+                const idx = logs.findIndex(l => l.id == id);
+                if(idx !== -1) logs[idx] = entry;
+            } else {
+                logs.push(entry);
+            }
+
+            saveData();
+            clearForm();
+        }
+
+        function clearForm() {
+            document.getElementById('studyForm').reset();
+            document.getElementById('entry-id').value = "";
+            document.getElementById('in-date').valueAsDate = new Date();
+            
+            const btn = document.getElementById('btn-submit');
+            btn.innerHTML = '<i class="fas fa-save mr-1"></i> Salvar';
+            btn.classList.remove('btn-info');
+            btn.classList.add('btn-success');
+            
+            calcPercent();
+        }
+
+        function editEntry(id) {
+            const item = logs.find(l => l.id === id);
+            if (!item) return;
+
+            document.getElementById('entry-id').value = item.id;
+            document.getElementById('in-date').value = item.date;
+            document.getElementById('in-subject').value = item.subject;
+            document.getElementById('in-topic').value = item.topic;
+            document.getElementById('in-mode').value = item.mode;
+            document.getElementById('in-axis').value = item.axis;
+            document.getElementById('in-theory').value = item.timeTheory;
+            document.getElementById('in-practice').value = item.timePractice;
+            document.getElementById('in-q-total').value = item.qTotal;
+            document.getElementById('in-q-correct').value = item.qCorrect;
+
+            const btn = document.getElementById('btn-submit');
+            btn.innerHTML = '<i class="fas fa-sync mr-1"></i> Atualizar';
+            btn.classList.remove('btn-success');
+            btn.classList.add('btn-info');
+
+            calcPercent();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function deleteEntry(id) {
+            if(confirm("Deseja excluir este registro de forma irreversível?")) {
+                logs = logs.filter(l => l.id !== id);
+                saveData();
+            }
+        }
+
+        // ---------- RENDERIZAÇÃO DA TABELA E KPIS ----------
+        function renderTable() {
+            const tbody = document.getElementById('log-table-body');
+            const empty = document.getElementById('empty-state');
+            tbody.innerHTML = '';
+
+            if (logs.length === 0) {
+                empty.classList.remove('hidden');
+                return;
+            }
+            empty.classList.add('hidden');
+
+            const modeColors = {
+                'PDF': 'badge-error badge-outline',
+                'Videoaula': 'badge-info badge-outline',
+                'Banco de Questões': 'badge-success badge-outline',
+                'Questões de IA': 'badge-accent badge-outline',
+                'Revisão': 'badge-warning badge-outline'
+            };
+
+            logs.forEach(log => {
+                const totalMin = log.timeTheory + log.timePractice;
+                const hours = Math.floor(totalMin / 60);
+                const mins = totalMin % 60;
+                const timeStr = `${hours}h${mins > 0 ? mins + 'm' : ''}`;
+                
+                const dateParts = log.date.split('-');
+                const dateBR = `${dateParts[2]}/${dateParts[1]}/${dateParts[0].substring(2)}`;
+
+                const badgeClass = modeColors[log.mode] || 'badge-ghost';
+                const modeBadge = `<div class="badge ${badgeClass} text-[10px] font-bold uppercase">${log.mode}</div>`;
+
+                let scoreHtml = '<span class="text-gray-300">-</span>';
+                if (log.qTotal > 0) {
+                    const colorClass = getColorClass(log.pct);
+                    scoreHtml = `
+                        <div class="flex flex-col items-center justify-center">
+                            <span class="font-bold ${colorClass}">${log.pct}%</span>
+                            <progress class="progress ${getProgressColor(log.pct)} w-12" value="${log.pct}" max="100"></progress>
+                        </div>
+                    `;
+                }
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-4 whitespace-nowrap text-slate-500 font-mono">${dateBR}</td>
+                    <td class="px-4">
+                        <div class="font-bold text-slate-800">${log.subject}</div>
+                        <div class="text-[10px] text-slate-500 uppercase tracking-wide">${log.topic}</div>
+                    </td>
+                    <td class="px-4 text-center">${modeBadge}</td>
+                    <td class="px-4 text-center font-mono text-slate-600 font-medium">${timeStr}</td>
+                    <td class="px-4 text-center text-slate-500 font-medium">
+                        ${log.qTotal > 0 ? `${log.qCorrect}/${log.qTotal}` : '-'}
+                    </td>
+                    <td class="px-4 text-center">${scoreHtml}</td>
+                    <td class="px-4 text-center">
+                        <button onclick="editEntry(${log.id})" class="btn btn-ghost btn-xs text-blue-500"><i class="fas fa-pen"></i></button>
+                        <button onclick="deleteEntry(${log.id})" class="btn btn-ghost btn-xs text-red-400"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function updateKPIs() {
+            let totalMinutes = 0, totalQuest = 0, weightedAcc = 0, questionsForAcc = 0;
+
+            logs.forEach(l => {
+                totalMinutes += (l.timeTheory + l.timePractice);
+                totalQuest += l.qTotal;
+                if (l.qTotal > 0) {
+                    weightedAcc += l.qCorrect;
+                    questionsForAcc += l.qTotal;
+                }
+            });
+
+            const hours = Math.floor(totalMinutes / 60);
+            const mins = totalMinutes % 60;
+            const globalAcc = questionsForAcc > 0 ? Math.round((weightedAcc / questionsForAcc) * 100) : 0;
+
+            document.getElementById('kpi-hours').innerText = `${hours}h ${mins}m`;
+            document.getElementById('kpi-quest').innerText = totalQuest;
+            document.getElementById('kpi-acc').innerText = `${globalAcc}%`;
+            document.getElementById('kpi-acc').className = `text-2xl font-black ${getColorClass(globalAcc)}`;
+            document.getElementById('kpi-sessions').innerText = logs.length;
+        }
+
+        // ---------- HEATMAP: GITHUB STYLE ----------
+        function renderHeatmap() {
+            const container = document.getElementById('heatmap-container');
+            container.innerHTML = ''; 
+
+            // 1. Agrupar minutos totais por data
+            const studyDataByDate = {};
+            logs.forEach(log => {
+                if (!studyDataByDate[log.date]) studyDataByDate[log.date] = 0;
+                studyDataByDate[log.date] += (log.timeTheory + log.timePractice);
+            });
+
+            // 2. Gerar array de datas para 52 semanas (364 dias)
+            const today = new Date();
+            const dates = [];
+            // Ajustar fuso local
+            const localToday = new Date(today.getTime() - (today.getTimezoneOffset() * 60000));
+            
+            for (let i = 364; i >= 0; i--) {
+                const d = new Date(localToday);
+                d.setDate(localToday.getDate() - i);
+                dates.push(d);
+            }
+
+            // 3. Montar a Grade (Grid CSS)
+            // Calculamos o dia da semana da data mais antiga para preencher os "buracos" iniciais
+            const firstDate = dates[0];
+            const emptyDays = firstDate.getDay(); // 0 = Domingo, 1 = Seg...
+            
+            const grid = document.createElement('div');
+            // 7 linhas (dom-sab), fluxo em colunas
+            grid.className = 'grid grid-rows-7 grid-flow-col gap-1';
+
+            // Preencher "buracos" antes do primeiro dia para alinhar domingos na primeira linha
+            for(let i=0; i<emptyDays; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'w-3 h-3 rounded-sm bg-transparent';
+                grid.appendChild(emptyCell);
+            }
+
+            // Inserir os dias
+            dates.forEach(d => {
+                const dateStr = d.toISOString().split('T')[0];
+                const minutes = studyDataByDate[dateStr] || 0;
+                
+                const cell = document.createElement('div');
+                cell.className = `w-3 h-3 rounded-sm cursor-pointer transition-colors hover:ring-1 hover:ring-slate-400 ${getHeatmapColor(minutes)}`;
+                
+                const hoursStr = Math.floor(minutes / 60);
+                const minsStr = minutes % 60;
+                const timeText = minutes > 0 ? `${hoursStr}h ${minsStr}m` : 'Nenhum estudo';
+                
+                // Tooltip nativo (title)
+                const dateBR = `${dateStr.split('-')[2]}/${dateStr.split('-')[1]}`;
+                cell.title = `${dateBR}: ${timeText}`;
+                
+                grid.appendChild(cell);
+            });
+
+            container.appendChild(grid);
+        }
+
+        function getHeatmapColor(minutes) {
+            if (minutes === 0) return 'bg-slate-100'; 
+            if (minutes < 60) return 'bg-emerald-200'; 
+            if (minutes < 120) return 'bg-emerald-400';
+            if (minutes < 240) return 'bg-emerald-600';
+            return 'bg-emerald-800'; 
+        }
+
+        // ---------- UTILITÁRIOS E CORES ----------
+        function getColorClass(pct) {
+            if (pct >= 80) return "text-emerald-500";
+            if (pct >= 60) return "text-amber-500";
+            return "text-red-500";
+        }
+
+        function getProgressColor(pct) {
+            if (pct >= 80) return "progress-success";
+            if (pct >= 60) return "progress-warning";
+            return "progress-error";
+        }
+
+        // Backup Actions
+        function exportData() {
+            if(logs.length === 0) { alert("Não há dados para exportar."); return; }
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(logs));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "backup_cpt2026.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
+        function importData(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if(parsed && Array.isArray(parsed)) {
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+                        loadData();
+                        alert("Dados restaurados com sucesso!");
+                    }
+                } catch (err) { alert("Erro ao ler arquivo. Verifique o formato."); }
+            };
+            reader.readAsText(file);
+        }
+
+        function resetData() {
+            if(confirm("ATENÇÃO: Isso apagará TODO o seu histórico de estudos. Deseja prosseguir?")) {
+                localStorage.removeItem(STORAGE_KEY);
+                loadData();
+            }
+        }
+    </script>
+</body>
+</html>

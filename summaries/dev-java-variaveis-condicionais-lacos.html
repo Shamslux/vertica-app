@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula Avançada: Lógica em Java - CP-T Marinha</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { 
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    },
+                    colors: {
+                        java: { 50: '#fef2f2', 500: '#ef4444', 700: '#b91c1c' },
+                        logic: { 50: '#eff6ff', 500: '#3b82f6', 700: '#1d4ed8' },
+                        loop: { 50: '#fdf4ff', 500: '#d946ef', 700: '#a21caf' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); border: 1px solid rgba(226, 232, 240, 0.8); }
+        .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15); }
+        .code-block { background: #1e293b; color: #e2e8f0; padding: 1rem; border-radius: 0.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; overflow-x: auto; }
+        .keyword { color: #f9a8d4; font-weight: bold; }
+        .type { color: #818cf8; }
+        .string { color: #a7f3d0; }
+        .comment { color: #64748b; font-style: italic; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased leading-relaxed font-sans">
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm bg-opacity-90 backdrop-blur-md">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-red-700 rounded-xl flex items-center justify-center text-white font-extrabold text-xl shadow-lg">JV</div>
+                <div>
+                    <h1 class="text-xl font-bold text-slate-900 leading-tight">Lógica de Programação com Java</h1>
+                    <p class="text-xs text-slate-500 font-medium tracking-wide uppercase">Foco Bibliográfico: Deitel & Deitel (10ª Edição)</p>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <span class="px-3 py-1 bg-red-50 text-red-700 rounded-full text-[10px] font-bold border border-red-200 uppercase tracking-tighter">Variáveis</span>
+                <span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-[10px] font-bold border border-blue-200 uppercase tracking-tighter">Condicionais</span>
+                <span class="px-3 py-1 bg-fuchsia-50 text-fuchsia-700 rounded-full text-[10px] font-bold border border-fuchsia-200 uppercase tracking-tighter">Laços</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-10 space-y-20">
+
+        <section class="text-center max-w-3xl mx-auto mb-16">
+            <h2 class="text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">Fundamentos Sintáticos e Semânticos</h2>
+            <p class="text-lg text-slate-600">
+                Para o CP-T, entender a lógica abstrata não basta. É necessário dominar as especificidades e as regras estritas de tipagem da linguagem Java.
+            </p>
+        </section>
+
+        <section>
+            <div class="flex items-center gap-4 mb-8 border-b border-slate-200 pb-4">
+                <div class="w-10 h-10 rounded-lg bg-java-500 text-white flex items-center justify-center shadow-lg">1</div>
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800">Variáveis e Tipos de Dados</h2>
+                    <p class="text-xs text-slate-500 uppercase font-semibold">Tipagem Estática e Escopo</p>
+                </div>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8 mb-6">
+                <div class="space-y-4">
+                    <p class="text-sm text-slate-600">De acordo com <strong>Deitel</strong>, Java é fortemente tipada. Todas as variáveis devem ser declaradas com um tipo antes de serem utilizadas. Existem duas grandes categorias: <strong>Tipos Primitivos</strong> e <strong>Tipos de Referência</strong>.</p>
+                    
+                    <div class="my-4 text-center">
+                        
+                    </div>
+
+                    <div class="bg-red-50 border-l-4 border-java-500 p-4 rounded-r-lg">
+                        <h4 class="font-bold text-java-700 text-sm">Alerta de Edital (Pegadinha Clássica):</h4>
+                        <ul class="list-disc pl-5 text-xs text-slate-700 mt-2 space-y-1">
+                            <li><strong>Variáveis de Instância/Classe:</strong> Recebem valores padrão (<code class="bg-white px-1 rounded text-red-600">0</code>, <code class="bg-white px-1 rounded text-red-600">false</code>, <code class="bg-white px-1 rounded text-red-600">null</code>).</li>
+                            <li><strong>Variáveis Locais:</strong> <u class="font-bold">NÃO</u> recebem valores padrão. Utilizar uma variável local sem inicialização prévia gera um <strong>Erro de Compilação</strong> (não é erro de execução!).</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <h4 class="text-xs font-bold text-slate-400 uppercase mb-4 tracking-widest">Tipos Primitivos em Java</h4>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between border-b pb-1"><span class="font-mono text-java-700">byte</span><span class="text-slate-500">8 bits (inteiro)</span></div>
+                        <div class="flex justify-between border-b pb-1"><span class="font-mono text-java-700">short</span><span class="text-slate-500">16 bits (inteiro)</span></div>
+                        <div class="flex justify-between border-b pb-1"><span class="font-mono text-java-700">int</span><span class="text-slate-500">32 bits (inteiro)</span></div>
+                        <div class="flex justify-between border-b pb-1"><span class="font-mono text-java-700">long</span><span class="text-slate-500">64 bits (inteiro)</span></div>
+                        <div class="flex justify-between border-b pb-1"><span class="font-mono text-java-700">float</span><span class="text-slate-500">32 bits (ponto flutuante)</span></div>
+                        <div class="flex justify-between border-b pb-1"><span class="font-mono text-java-700">double</span><span class="text-slate-500">64 bits (ponto flutuante)</span></div>
+                        <div class="flex justify-between border-b pb-1"><span class="font-mono text-java-700">boolean</span><span class="text-slate-500">true ou false</span></div>
+                        <div class="flex justify-between"><span class="font-mono text-java-700">char</span><span class="text-slate-500">16 bits (Unicode)</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex items-center gap-4 mb-8 border-b border-slate-200 pb-4">
+                <div class="w-10 h-10 rounded-lg bg-logic-500 text-white flex items-center justify-center shadow-lg">2</div>
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800">Estruturas Condicionais</h2>
+                    <p class="text-xs text-slate-500 uppercase font-semibold">Tomada de Decisão e Fluxo</p>
+                </div>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8 items-start">
+                <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm order-2 lg:order-1">
+                    <h4 class="text-xs font-bold text-slate-400 uppercase mb-4">Sintaxe: O perigo do Switch</h4>
+                    <div class="code-block">
+<span class="type">int</span> opcao = <span class="type">2</span>;
+<span class="keyword">switch</span> (opcao) {
+    <span class="keyword">case</span> 1:
+        System.out.println(<span class="string">"Um"</span>);
+    <span class="keyword">case</span> 2:
+        System.out.println(<span class="string">"Dois"</span>);
+        <span class="comment">// Sem break! Ocorre o Fall-through</span>
+    <span class="keyword">case</span> 3:
+        System.out.println(<span class="string">"Três"</span>);
+}
+<span class="comment">// Saída: "Dois", "Três"</span>
+                    </div>
+                </div>
+                
+                <div class="space-y-4 order-1 lg:order-2">
+                    <p class="text-sm text-slate-600">As instruções de seleção (<code class="bg-slate-100 px-1 rounded">if</code>, <code class="bg-slate-100 px-1 rounded">if...else</code>, <code class="bg-slate-100 px-1 rounded">switch</code>) determinam o fluxo com base em expressões booleanas.</p>
+                    <div class="bg-blue-50 border-l-4 border-logic-500 p-4 rounded-r-lg">
+                        <h4 class="font-bold text-logic-700 text-sm">Conceitos de Prova:</h4>
+                        <ul class="list-disc pl-5 text-xs text-slate-700 mt-2 space-y-2">
+                            <li><strong>Operador Ternário (<code class="font-mono">?:</code>):</strong> Único operador em Java que recebe três operandos. Retorna um valor e frequentemente substitui um bloco <code>if...else</code> simples.</li>
+                            <li><strong>Fall-Through:</strong> No <code>switch</code>, se uma cláusula <code>case</code> coincidir e não houver um comando <code>break</code>, a execução "cairá" para os próximos cases independentemente de seus valores. A banca adora cobrar o resultado no console disso!</li>
+                            <li><strong>Strings no Switch:</strong> A partir do Java SE 7, é permitido usar objetos <code>String</code> nas expressões <code>switch</code>.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex items-center gap-4 mb-8 border-b border-slate-200 pb-4">
+                <div class="w-10 h-10 rounded-lg bg-loop-500 text-white flex items-center justify-center shadow-lg">3</div>
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800">Estruturas de Repetição (Laços)</h2>
+                    <p class="text-xs text-slate-500 uppercase font-semibold">Iteração e Controle</p>
+                </div>
+            </div>
+
+            <div class="my-6 text-center">
+                
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-6 relative">
+                <div class="glass-panel p-6 rounded-3xl border-t-8 border-slate-800 card-hover">
+                    <div class="text-center mb-4">
+                        <h3 class="text-xl font-extrabold text-slate-800">WHILE</h3>
+                        <p class="text-[10px] text-slate-500 uppercase">Pré-teste</p>
+                    </div>
+                    <p class="text-xs text-slate-600 mb-4">A condição de continuação é testada <strong>antes</strong> da execução do corpo. Se a condição for falsa inicialmente, o corpo nunca será executado.</p>
+                    <div class="code-block text-xs">
+<span class="keyword">while</span> (condicao) {
+    <span class="comment">// comandos</span>
+}
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-3xl border-t-8 border-loop-500 card-hover scale-105 shadow-xl z-10">
+                    <div class="text-center mb-4">
+                        <h3 class="text-xl font-extrabold text-slate-800">FOR</h3>
+                        <p class="text-[10px] text-loop-600 uppercase font-bold">Iteração Definida</p>
+                    </div>
+                    <p class="text-xs text-slate-600 mb-4">Agrupa inicialização, condição e incremento no cabeçalho. Excelente para quando se sabe previamente o número de iterações.</p>
+                    <div class="code-block text-xs">
+<span class="keyword">for</span> (<span class="type">int</span> i=0; i&lt;10; i++) {
+    <span class="comment">// comandos</span>
+}
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-3xl border-t-8 border-slate-800 card-hover">
+                    <div class="text-center mb-4">
+                        <h3 class="text-xl font-extrabold text-slate-800">DO...WHILE</h3>
+                        <p class="text-[10px] text-slate-500 uppercase">Pós-teste</p>
+                    </div>
+                    <p class="text-xs text-slate-600 mb-4">Testa a condição <strong>após</strong> a execução do corpo. Garante que o bloco será executado <strong>pelo menos uma vez</strong>.</p>
+                    <div class="code-block text-xs">
+<span class="keyword">do</span> {
+    <span class="comment">// comandos</span>
+} <span class="keyword">while</span> (condicao);
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 bg-slate-900 rounded-2xl p-6 text-white relative overflow-hidden">
+                <h4 class="text-fuchsia-400 font-bold text-sm mb-4 uppercase tracking-widest">Controle de Fluxo Interno: Break vs Continue</h4>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="text-xs space-y-2 border-l-2 border-slate-700 pl-4">
+                        <p><strong class="text-white">Break:</strong> Quando executado em um `while`, `for`, `do...while` ou `switch`, causa a <strong>saída imediata</strong> dessa estrutura. A execução continua na instrução logo após a estrutura.</p>
+                    </div>
+                    <div class="text-xs space-y-2 border-l-2 border-slate-700 pl-4">
+                        <p><strong class="text-white">Continue:</strong> Pula as instruções restantes no corpo do laço para a iteração <strong>atual</strong> e prossegue para a próxima iteração do laço (no `for`, vai para a expressão de incremento).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-3xl shadow-md border border-slate-200 overflow-hidden">
+            <div class="p-6 bg-slate-900 flex justify-between items-center">
+                <h3 class="text-white font-bold text-lg">Revisão Rápida: Deitel, Cap. 4 e 5</h3>
+                <span class="bg-slate-700 text-slate-300 text-[10px] px-2 py-1 rounded">Gabarito de Maratona</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200">
+                            <th class="px-6 py-4 font-bold text-slate-500 uppercase">Característica</th>
+                            <th class="px-6 py-4 font-bold text-slate-500 uppercase">Comportamento em Java</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr>
+                            <td class="px-6 py-4 font-bold text-slate-800">Promoção Inteira (Coerção)</td>
+                            <td class="px-6 py-4 text-slate-600">Tipos menores (`byte`, `short`, `char`) são promovidos a `int` antes de operações aritméticas.</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 font-bold text-slate-800">Operadores Lógicos Curtos (`&&`, `||`)</td>
+                            <td class="px-6 py-4 text-slate-600"><strong>Avaliação de curto-circuito:</strong> A expressão à direita não é avaliada se o resultado já for determinado pela esquerda.</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 font-bold text-slate-800">For Aprimorado (Enhanced `for`)</td>
+                            <td class="px-6 py-4 text-slate-600">Itera sobre arrays e coleções sem usar uma variável de contagem. Não permite modificar o array original durante a iteração.</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 font-bold text-slate-800">Escopo de Variável no `for`</td>
+                            <td class="px-6 py-4 text-slate-600">Variáveis de controle declaradas dentro do cabeçalho do `for` não existem fora do bloco desse laço. Tentar acessá-las fora gera erro.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer class="text-center py-10 border-t border-slate-200">
+            <p class="text-slate-400 text-[10px] uppercase tracking-widest font-bold">Material de Apoio • Linguagem de Programação Java (CP-T)</p>
+        </footer>
+
+    </main>
+</body>
+</html>
